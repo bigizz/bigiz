@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio - Windows XP Edition</title>
+    <style>
+        /* Base styling for the page */
+        body {
+            font-family: 'Tahoma', 'Verdana', sans-serif;
+            font-size: 11px;
+            background-color: #3d78d8; /* XP Blue */
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            overflow: hidden;
+        }
+        
+        /* --- Login Screen --- */
+        #login-screen {
+            display: flex;
+            flex-direction: column;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, #0048ad, #0068e4);
+            color: white;
+            transition: opacity 0.5s ease-out;
+        }
+        .login-header, .login-footer {
+            height: 30px;
+            background-color: rgba(0,0,0,0.1);
+        }
+        .login-main {
+            flex-grow: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+        .login-box {
+            position: absolute;
+            left: 15%;
+        }
+        .login-box img {
+            width: 150px;
+            margin-bottom: 1rem;
+        }
+        .user-box {
+            cursor: pointer;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .user-box:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+        }
+        .user-box img {
+            width: 80px;
+            height: 80px;
+            border-radius: 5px;
+            margin-bottom: 0.5rem;
+        }
+        .user-box .username {
+            font-size: 20px;
+            font-weight: bold;
+        }
+        .user-box .usermsg {
+            font-size: 12px;
+            margin-top: 1rem;
+            color: #d1e3ff;
+        }
+        .login-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 1rem;
+            background: linear-gradient(to top, #001e76, #0036b1);
+        }
+        .turn-off-btn {
+            background-color: transparent;
+            border: none;
+            color: white;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+         .turn-off-btn img {
+            width: 20px;
+            margin-right: 5px;
+        }
+
+        .screen {
+            display: none; /* Hidden by default */
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+            background: url('bliss_wallpaper.jpg') no-repeat center center;
+            background-size: cover;
+            overflow: hidden;
+            opacity: 0;
+            transition: opacity 0.5s ease-in;
+        }
+
+        #desktop {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            gap: 10px;
+            padding: 10px;
+            height: calc(100% - 30px); /* Full height minus taskbar */
+        }
+
+        /* --- Desktop Icons --- */
+        .desktop-icon {
+            width: 80px; display: flex; flex-direction: column; align-items: center;
+            text-align: center; color: white; padding: 5px; cursor: pointer;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
+        }
+        .desktop-icon:hover { background-color: rgba(50, 100, 200, 0.4); border: 1px dotted rgba(255, 255, 255, 0.7); }
+        .desktop-icon img { width: 48px; height: 48px; margin-bottom: 5px; }
+
+        /* --- XP Style Window --- */
+        .window {
+            display: none; position: absolute; background-color: #ECE9D8;
+            border: 1px solid #000; box-shadow: 3px 3px 5px rgba(0,0,0,0.4);
+            /* Default sizes for larger screens */
+            width: 550px;
+            height: 400px;
+        }
+        #info-window, #contact-window {
+            width: 400px;
+            height: 250px;
+        }
+
+        .window-header {
+            background: linear-gradient(to right, #0055e7, #3780f1); color: white;
+            font-weight: bold; padding: 3px 5px; display: flex; justify-content: space-between;
+            align-items: center; cursor: default;
+        }
+        .window-buttons button {
+            background-color: #c4d6f9; border: 1px outset #fff; width: 20px; height: 18px;
+            font-family: 'Webdings', 'Marlett'; font-size: 14px; line-height: 14px;
+            margin-left: 2px; color: black;
+        }
+        .window-buttons .close-btn { background-color: #e81123; color: white; }
+        .window-content { padding: 10px; height: calc(100% - 45px); overflow-y: auto; color: #000; }
+        .file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; }
+        .file-item { display: flex; flex-direction: column; align-items: center; text-align: center; color: black; cursor: pointer;}
+        .file-item:hover { background-color: #d4e5f7; }
+        .file-item img { width: 48px; height: 48px; }
+        
+        /* --- XP Taskbar --- */
+        .taskbar {
+            position: absolute; bottom: 0; left: 0; right: 0; height: 30px;
+            background: linear-gradient(to bottom, #245edc, #3b74f1, #245edc);
+            border-top: 1px solid #4a80ef; display: flex;
+            align-items: center; padding: 0; z-index: 1000;
+        }
+        .start-button {
+            background: linear-gradient(to top, #3b8728, #63c84e);
+            color: white;
+            border: 1px solid #2a651a;
+            border-radius: 3px 10px 10px 3px;
+            margin: 0 0 0 3px;
+            padding: 2px 20px 2px 10px;
+            height: 27px;
+            box-sizing: border-box;
+            font-weight: bold;
+            font-size: 16px;
+            font-style: italic;
+            cursor: pointer;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
+            display: flex;
+            align-items: center;
+            box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.5);
+        }
+        .start-divider {
+            width: 2px;
+            height: 100%;
+            margin-left: 1px;
+            background: linear-gradient(to bottom, 
+                transparent 0%, transparent 15%, 
+                #245edc 15%, #245edc 30%, 
+                transparent 30%, transparent 35%, 
+                #245edc 35%, #245edc 60%, 
+                transparent 60%, transparent 70%, 
+                #245edc 70%, #245edc 85%, 
+                transparent 85%, transparent 100%);
+        }
+        .system-tray { background-color: #3f90ef; border: 1px inset #fff; padding: 3px 10px; color: white; margin-left: auto; margin-right: 2px;}
+
+        /* --- XP Start Menu --- */
+        .start-menu {
+            display: none; position: absolute; bottom: 30px; left: 0; width: 350px;
+            background: linear-gradient(to bottom, #2d6bce, #1646a5);
+            border: 1px solid #000; border-radius: 5px 5px 0 0; padding: 3px; z-index: 999;
+        }
+        .start-menu-header {
+            background: linear-gradient(to bottom, #6b92d6, #3164c3); padding: 5px; display: flex; align-items: center;
+            border-bottom: 1px solid #1646a5; color: white;
+        }
+        .start-menu-header img { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; }
+        .start-menu-body { display: flex; }
+        .start-menu-left { background-color: #fff; width: 50%; padding: 5px; }
+        .start-menu-right { width: 50%; padding: 5px; }
+        .start-menu-item {
+            display: flex; align-items: center; padding: 5px; cursor: pointer; color: black;
+        }
+        .start-menu-item:hover { background-color: #316ac5; color: white; }
+        .start-menu-item img { width: 24px; height: 24px; margin-right: 8px; }
+        .start-menu-right .start-menu-item { color: white; }
+        .start-menu-right .start-menu-item:hover { background-color: #4c7dd0; }
+        
+        /* --- Preview Window --- */
+        #preview-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.4); z-index: 2000;
+        }
+        #preview-window {
+            display: none; position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80vw; max-width: 600px;
+            height: 80vh; max-height: 500px;
+            background-color: #ECE9D8;
+            border: 1px solid #000; box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+            z-index: 2001;
+        }
+        #preview-content {
+            padding: 10px;
+            height: calc(100% - 45px); /* total height minus padding and header */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #preview-content img, #preview-content video {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        #preview-content audio {
+            width: 100%;
+        }
+
+
+        /* --- Responsive Styles --- */
+        @media (max-width: 768px) {
+            .login-main {
+                flex-direction: column;
+                justify-content: center;
+                gap: 2rem;
+            }
+            .login-box {
+                position: static;
+            }
+            .login-footer {
+                flex-direction: column;
+                height: auto;
+                padding: 0.5rem;
+                text-align: center;
+            }
+            .window {
+                width: 95vw; /* Occupy most, but not all, of the screen */
+                height: 85vh;
+            }
+            #info-window, #contact-window {
+                width: 95vw;
+                height: 85vh;
+            }
+            .window-content {
+                height: calc(100% - 25px); /* Adjust for header */
+            }
+            .start-menu {
+                width: calc(100% - 6px); /* Full width with padding */
+            }
+            .desktop-icon {
+                width: 70px;
+            }
+             .desktop-icon span {
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="login-screen">
+        <div class="login-header"></div>
+        <div class="login-main">
+            <div class="login-box">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Microsoft_Windows_XP_logo.svg/1280px-Microsoft_Windows_XP_logo.svg.png" alt="Windows XP Logo">
+                <p>To begin, click your user name</p>
+            </div>
+            <div id="user-profile" class="user-box">
+                <img src="https://img.icons8.com/fluency/96/user-male-circle.png" alt="User Profile">
+                <span class="username">Bigiz</span>
+                <p class="usermsg">after you log on, you can browse Bigiz's work</p>
+            </div>
+        </div>
+        <div class="login-footer">
+            <button class="turn-off-btn">
+                <img src="https://www.freeiconspng.com/uploads/power-button-icon-3.png" alt="Turn Off">
+                Turn off computer
+            </button>
+            <span>After you log on, you can add or change accounts. Just go to Control Panel and click User Accounts.</span>
+        </div>
+    </div>
+
+    <div class="screen">
+        <!-- Desktop Area -->
+        <main id="desktop">
+            <div class="desktop-icon" data-folder="documents">
+                <img src="https://img.icons8.com/color/48/000000/windows-xp-my-documents.png" alt="Documents"/>
+                <span>My Documents</span>
+            </div>
+            <div class="desktop-icon" data-folder="music">
+                    <img src="https://img.icons8.com/color/48/000000/windows-xp-my-music.png" alt="Music"/>
+                    <span>My Music</span>
+                </div>
+                <div class="desktop-icon" data-folder="images">
+                    <img src="https://img.icons8.com/color/48/000000/windows-xp-my-pictures.png" alt="Pictures"/>
+                    <span>My Pictures</span>
+                </div>
+                <div class="desktop-icon" data-folder="videos">
+                    <img src="https://img.icons8.com/color/48/windows-movie-maker.png" alt="Videos"/>
+                    <span>My Videos</span>
+                </div>
+            </main>
+
+            <!-- --- Windows --- -->
+            <div id="file-explorer-window" class="window">
+                <div class="window-header">
+                    <span class="window-title">Explorer</span>
+                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                </div>
+                <div class="window-content"><div class="file-grid"></div></div>
+            </div>
+
+            <div id="info-window" class="window">
+                 <div class="window-header">
+                    <span class="window-title">About Me</span>
+                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                </div>
+                <div class="window-content"><p>This is my personal portfolio, designed to look like Windows XP! I am a passionate developer who loves creating unique web experiences.</p></div>
+            </div>
+
+            <div id="contact-window" class="window">
+                 <div class="window-header">
+                    <span class="window-title">Contact</span>
+                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                </div>
+                <div class="window-content"><p>You can reach me at:</p><ul><li>Email: myemail@example.com</li><li>LinkedIn: /in/myprofile</li></ul></div>
+            </div>
+            
+            <!-- --- Preview Window --- -->
+            <div id="preview-overlay"></div>
+            <div id="preview-window" class="window">
+                <div class="window-header">
+                    <span id="preview-title" class="window-title">Preview</span>
+                    <div class="window-buttons"><button id="preview-close-btn" class="close-btn">r</button></div>
+                </div>
+                <div id="preview-content"></div>
+            </div>
+
+
+            <!-- Start Menu -->
+            <div id="start-menu" class="start-menu">
+                <div class="start-menu-header">
+                    <img src="https://img.icons8.com/fluency/48/user-male-circle.png" alt="User"/>
+                    <strong>Alex Doe</strong>
+                </div>
+                <div class="start-menu-body">
+                    <div class="start-menu-left">
+                        <div class="start-menu-item" data-window="info">
+                            <img src="https://img.icons8.com/color/48/ms-word-2.png" alt="Info"/>
+                            <span>Info</span>
+                        </div>
+                        <div class="start-menu-item" data-window="contact">
+                             <img src="https://img.icons8.com/color/48/ms-outlook.png" alt="Contact"/>
+                            <span>Contact</span>
+                        </div>
+                    </div>
+                    <div class="start-menu-right">
+                         <div class="start-menu-item" data-folder="documents">
+                            <img src="https://img.icons8.com/color/48/000000/windows-xp-my-documents.png" alt="Documents"/>
+                            <span>My Documents</span>
+                        </div>
+                         <div class="start-menu-item" data-folder="images">
+                            <img src="https://img.icons8.com/color/48/000000/windows-xp-my-pictures.png" alt="Pictures"/>
+                            <span>My Pictures</span>
+                        </div>
+                         <div class="start-menu-item" data-folder="music">
+                            <img src="https://img.icons8.com/color/48/000000/windows-xp-my-music.png" alt="Music"/>
+                            <span>My Music</span>
+                        </div>
+                         <div class="start-menu-item" data-folder="videos">
+                            <img src="https://img.icons8.com/color/48/windows-movie-maker.png" alt="Videos"/>
+                            <span>My Videos</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Taskbar -->
+            <div class="taskbar">
+                <button id="start-button" class="start-button">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Windows_XP_Icon.svg/20px-Windows_XP_Icon.svg.png" style="width:20px; height:20px; vertical-align:middle; margin-right: 4px;" alt="Start"/>
+                    start
+                </button>
+                <div class="start-divider"></div>
+                <div class="system-tray" id="clock">16:14 PM</div>
+            </div>
+        </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loginScreen = document.getElementById('login-screen');
+            const userProfile = document.getElementById('user-profile');
+            const desktopScreen = document.querySelector('.screen');
+
+            const desktopIcons = document.querySelectorAll('.desktop-icon');
+            const allWindows = document.querySelectorAll('.window');
+            const startButton = document.getElementById('start-button');
+            const startMenu = document.getElementById('start-menu');
+            const startMenuItems = document.querySelectorAll('.start-menu-item');
+            const clockElement = document.getElementById('clock');
+            
+            const previewOverlay = document.getElementById('preview-overlay');
+            const previewWindow = document.getElementById('preview-window');
+            const previewTitle = document.getElementById('preview-title');
+            const previewContent = document.getElementById('preview-content');
+            const previewCloseBtn = document.getElementById('preview-close-btn');
+
+            let highestZ = 10;
+
+            // --- Login Logic ---
+            userProfile.addEventListener('click', () => {
+                const startupSound = new Audio('https://www.winhistory.de/more/winstart/sounds/Windows%20XP%20Startup.wav');
+                startupSound.play().catch(e => console.log("Audio play failed. User interaction needed."));
+                
+                loginScreen.style.opacity = '0';
+                setTimeout(() => {
+                    loginScreen.style.display = 'none';
+                    desktopScreen.style.display = 'block';
+                    setTimeout(() => {
+                        desktopScreen.style.opacity = '1';
+                    }, 50);
+                }, 500);
+            });
+
+            // --- Project Data with content for previews ---
+            const projects = {
+                documents: [
+                    { name: 'Resume.doc', icon: 'https://img.icons8.com/color/48/ms-word-2.png', type: 'document', content: 'This is a placeholder for my resume document.' },
+                    { name: 'Presentation.ppt', icon: 'https://img.icons8.com/color/48/ms-powerpoint.png', type: 'document', content: 'This is a placeholder for a presentation.' },
+                ],
+                music: [
+                    { name: 'Ambient Track.mp3', icon: 'https://img.icons8.com/color/48/000000/wma.png', type: 'audio', content: 'https://www.w3schools.com/html/horse.mp3' },
+                ],
+                images: [
+                    { name: 'Landscape.jpg', icon: 'https://img.icons8.com/color/48/jpg.png', type: 'image', content: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470' },
+                ],
+                videos: [ 
+                    { name: 'Tutorial.avi', icon: 'https://img.icons8.com/color/48/avi.png', type: 'video', content: 'https://www.w3schools.com/html/mov_bbb.mp4' } 
+                ]
+            };
+            
+            // --- Window Management ---
+            const openWindow = (id, title) => {
+                const windowEl = document.getElementById(id + '-window');
+                if (windowEl) {
+                    windowEl.style.display = 'block';
+                    windowEl.style.zIndex = ++highestZ;
+
+                    // Always center new windows
+                    const screenRect = desktopScreen.getBoundingClientRect();
+                    const windowWidth = windowEl.offsetWidth;
+                    const windowHeight = windowEl.offsetHeight;
+                    
+                    let top = (screenRect.height - windowHeight) / 2;
+                    let left = (screenRect.width - windowWidth) / 2;
+                    
+                    windowEl.style.top = `${top}px`;
+                    windowEl.style.left = `${left}px`;
+
+                    if (title) {
+                        windowEl.querySelector('.window-title').textContent = title;
+                    }
+                }
+            };
+            
+            const closeWindow = (windowEl) => {
+                windowEl.style.display = 'none';
+            };
+
+            // --- Event Listeners for Windows ---
+            allWindows.forEach(windowEl => {
+                const closeBtn = windowEl.querySelector('.close-btn');
+                windowEl.addEventListener('mousedown', () => {
+                    windowEl.style.zIndex = ++highestZ;
+                });
+                if(closeBtn && !windowEl.id.includes('preview')) {
+                    closeBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        closeWindow(windowEl);
+                    });
+                }
+            });
+
+            // --- Desktop Icon Logic ---
+            desktopIcons.forEach(icon => {
+                icon.addEventListener('click', () => {
+                    const folderType = icon.dataset.folder;
+                    const title = { music: 'My Music', images: 'My Pictures', videos: 'My Videos', documents: 'My Documents'}[folderType];
+                    openWindow('file-explorer', title);
+                    
+                    const files = projects[folderType] || [];
+                    const container = document.getElementById('file-explorer-window').querySelector('.file-grid');
+                    container.innerHTML = files.map(file => `
+                        <div class="file-item" data-name="${file.name}" data-type="${file.type}" data-content="${file.content}">
+                            <img src="${file.icon}" alt="${file.name}"/>
+                            <span>${file.name}</span>
+                        </div>
+                    `).join('');
+                });
+            });
+            
+            // --- File Preview Logic ---
+            const openPreview = (name, type, content) => {
+                previewTitle.textContent = name;
+                let contentHTML = '';
+                switch(type) {
+                    case 'image':
+                        contentHTML = `<img src="${content}" alt="${name}">`;
+                        break;
+                    case 'video':
+                        contentHTML = `<video src="${content}" controls autoplay></video>`;
+                        break;
+                    case 'audio':
+                        contentHTML = `<audio src="${content}" controls autoplay></audio>`;
+                        break;
+                    case 'document':
+                        contentHTML = `<p style="padding: 1rem; text-align: left;">${content}</p>`;
+                        break;
+                }
+                previewContent.innerHTML = contentHTML;
+                previewOverlay.style.zIndex = ++highestZ;
+                previewWindow.style.zIndex = ++highestZ;
+                previewOverlay.style.display = 'block';
+                previewWindow.style.display = 'block';
+            };
+
+            const closePreview = () => {
+                previewContent.innerHTML = ''; // Stop video/audio from playing in background
+                previewOverlay.style.display = 'none';
+                previewWindow.style.display = 'none';
+            };
+
+            document.getElementById('file-explorer-window').querySelector('.file-grid').addEventListener('click', (e) => {
+                const fileItem = e.target.closest('.file-item');
+                if (fileItem) {
+                    const { name, type, content } = fileItem.dataset;
+                    openPreview(name, type, content);
+                }
+            });
+
+            previewCloseBtn.addEventListener('click', closePreview);
+            previewOverlay.addEventListener('click', closePreview);
+
+
+            // --- Start Menu Logic ---
+            const toggleStartMenu = (e) => {
+                e.stopPropagation();
+                startMenu.style.display = startMenu.style.display === 'block' ? 'none' : 'block';
+            };
+
+            startButton.addEventListener('click', toggleStartMenu);
+            document.addEventListener('click', (e) => {
+                if (!startMenu.contains(e.target) && e.target !== startButton) {
+                    startMenu.style.display = 'none';
+                }
+            });
+
+            startMenuItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const windowId = item.dataset.window;
+                    const folderId = item.dataset.folder;
+                    if (windowId) {
+                        openWindow(windowId);
+                    }
+                    if (folderId) {
+                        const correspondingIcon = document.querySelector(`.desktop-icon[data-folder="${folderId}"]`);
+                        correspondingIcon.dispatchEvent(new Event('click'));
+                    }
+                    startMenu.style.display = 'none';
+                });
+            });
+
+            // --- Clock ---
+            const updateClock = () => {
+                const now = new Date();
+                clockElement.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true });
+            };
+            updateClock();
+            setInterval(updateClock, 1000);
+        });
+    </script>
+</body>
+</html>
