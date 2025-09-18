@@ -22,62 +22,71 @@
             flex-direction: column;
             width: 100vw;
             height: 100vh;
-            background: linear-gradient(to bottom, #0048ad, #0068e4);
+            background: url('login-background.png') no-repeat center center;
+            background-size: cover;
             color: white;
             transition: opacity 0.5s ease-out;
+            position: relative;
         }
         .login-header, .login-footer {
             height: 30px;
-            background-color: rgba(0,0,0,0.1);
+            background: linear-gradient(to right, #093a8c, #0d59d3, #093a8c);
+            position: absolute;
+            left: 0;
+            right: 0;
         }
+        .login-header { top: 0; }
+        .login-footer { bottom: 0; }
+        
         .login-main {
             flex-grow: 1;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-around;
             text-align: center;
-            position: relative;
+            padding: 30px;
+            background: transparent;
         }
         .login-box {
-            position: absolute;
-            left: 15%;
+             text-align: center;
         }
         .login-box img {
-            width: 150px;
+            width: 200px;
             margin-bottom: 1rem;
         }
+        .login-box p {
+            font-size: 18px;
+        }
+
         .user-box {
             cursor: pointer;
-            padding: 1rem;
+            padding: 0.5rem 1rem;
             display: flex;
-            flex-direction: column;
             align-items: center;
+            gap: 1rem;
+            min-width: 200px;
         }
         .user-box:hover {
             background-color: rgba(255, 255, 255, 0.1);
             border-radius: 5px;
         }
         .user-box img {
-            width: 80px;
-            height: 80px;
+            width: 64px;
+            height: 64px;
             border-radius: 5px;
-            margin-bottom: 0.5rem;
         }
         .user-box .username {
-            font-size: 20px;
-            font-weight: bold;
+            font-size: 22px;
+            font-weight: normal;
         }
-        .user-box .usermsg {
-            font-size: 12px;
-            margin-top: 1rem;
-            color: #d1e3ff;
-        }
-        .login-footer {
+       
+        .login-footer-content {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            height: 100%;
             padding: 0 1rem;
-            background: linear-gradient(to top, #001e76, #0036b1);
+            font-size: 11px;
         }
         .turn-off-btn {
             background-color: transparent;
@@ -122,7 +131,12 @@
             text-shadow: 1px 1px 3px rgba(0,0,0,0.7);
         }
         .desktop-icon:hover { background-color: rgba(50, 100, 200, 0.4); border: 1px dotted rgba(255, 255, 255, 0.7); }
-        .desktop-icon img { width: 48px; height: 48px; margin-bottom: 5px; }
+        .desktop-icon img, .desktop-icon svg { width: 48px; height: 48px; margin-bottom: 5px; }
+        #recycle-bin {
+            position: absolute;
+            bottom: 40px;
+            right: 10px;
+        }
 
         /* --- XP Style Window --- */
         .window {
@@ -148,12 +162,234 @@
             margin-left: 2px; color: black;
         }
         .window-buttons .close-btn { background-color: #e81123; color: white; }
-        .window-content { padding: 10px; height: calc(100% - 45px); overflow-y: auto; color: #000; }
+        
+        .window-toolbar {
+            background-color: #ECE9D8;
+            border-bottom: 1px solid #aca899;
+            padding: 2px 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            height: 28px;
+        }
+        .nav-button {
+            background: none;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            padding: 2px;
+        }
+        .nav-button:disabled svg {
+            opacity: 0.4;
+        }
+        .nav-button svg {
+            width: 24px;
+            height: 24px;
+        }
+        .nav-button span {
+            margin-left: 2px;
+        }
+
+        .window-content { padding: 10px; height: calc(100% - 25px - 31px - 20px); overflow-y: auto; color: #000; }
         .file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; }
         .file-item { display: flex; flex-direction: column; align-items: center; text-align: center; color: black; cursor: pointer;}
         .file-item:hover { background-color: #d4e5f7; }
-        .file-item img { width: 48px; height: 48px; }
+        .file-item img, .file-item svg { width: 48px; height: 48px; }
         
+        /* --- Paint App Styles --- */
+        #paint-window {
+            width: 600px;
+            height: 450px;
+        }
+        #paint-window .window-content {
+            display: flex;
+            padding: 0;
+            height: calc(100% - 25px);
+        }
+        .paint-toolbar {
+            width: 60px;
+            background-color: #ECE9D8;
+            border-right: 1px solid #aca899;
+            padding: 5px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        .tool-group {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+            border: 1px solid #aca899;
+            padding: 3px;
+        }
+        .tool {
+            width: 24px;
+            height: 24px;
+            border: 1px solid transparent;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .tool svg {
+            width: 20px;
+            height: 20px;
+        }
+        .tool.active, .tool:hover {
+            border: 1px solid #316ac5;
+            background-color: #d4e5f7;
+        }
+        .paint-canvas-area {
+            flex-grow: 1;
+            display: flex;
+        }
+        #paint-canvas {
+            background-color: #fff;
+            cursor: crosshair;
+            flex-grow: 1;
+        }
+        .paint-palette {
+            border: 1px solid #aca899;
+            padding: 3px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3px;
+            margin-top: 5px;
+        }
+        .color-box {
+            width: 16px;
+            height: 16px;
+            border: 1px solid #888;
+            margin: 1px;
+            cursor: pointer;
+            justify-self: center;
+        }
+        .color-box.active {
+            border: 2px solid #316ac5;
+            margin: 0;
+        }
+
+        /* --- Minesweeper Styles --- */
+        #minesweeper-window {
+            width: auto;
+            height: auto;
+        }
+        #minesweeper-window .window-content {
+            padding: 6px;
+            background-color: #C0C0C0;
+            border: 2px inset #fff;
+        }
+        .mine-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #C0C0C0;
+            border: 2px outset #fff;
+            padding: 5px;
+            margin-bottom: 6px;
+        }
+        .mine-counter {
+            background-color: #000;
+            color: #ff0000;
+            font-family: 'DS-Digital', sans-serif;
+            font-size: 24px;
+            padding: 2px 4px;
+            border: 1px inset #fff;
+        }
+        .smiley-btn {
+            width: 26px;
+            height: 26px;
+            border: 2px outset #fff;
+            background-color: #C0C0C0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+        }
+        .smiley-btn img {
+            width: 20px;
+            height: 20px;
+        }
+        .smiley-btn:active {
+            border-style: inset;
+        }
+        .mine-grid {
+            display: grid;
+            border: 3px inset #fff;
+        }
+        .mine-cell {
+            width: 16px;
+            height: 16px;
+            background-color: #C0C0C0;
+            border: 2px outset #fff;
+            font-size: 12px;
+            font-weight: bold;
+            text-align: center;
+            line-height: 16px;
+        }
+        .mine-cell.revealed {
+            border: 1px solid #7B7B7B;
+        }
+        .mine-cell.flagged {
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path fill="red" d="M6 3h12v2h-12zm-2 4h16v10h-16zm2 2v6h12v-6z"/></svg>');
+            background-size: 80%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .mine-cell.mine {
+            background-color: red;
+            background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><circle cx="12" cy="12" r="6" fill="black"/><path fill="white" d="M11 7h2v10h-2z"/><path fill="white" d="M7 11h10v2h-10z"/><path transform="rotate(45 12 12)" fill="white" d="M11 7h2v10h-2z"/><path transform="rotate(-45 12 12)" fill="white" d="M11 7h2v10h-2z"/></svg>');
+            background-size: 80%;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        .mine-cell.c1 { color: #0000FF; }
+        .mine-cell.c2 { color: #008000; }
+        .mine-cell.c3 { color: #FF0000; }
+        .mine-cell.c4 { color: #000080; }
+        .mine-cell.c5 { color: #800000; }
+        .mine-cell.c6 { color: #008080; }
+        .mine-cell.c7 { color: #000000; }
+        .mine-cell.c8 { color: #808080; }
+
+        /* --- Command Prompt Styles --- */
+        #command-prompt-window {
+            width: 580px;
+            height: 320px;
+        }
+        #command-prompt-window .window-content {
+            background-color: #000;
+            color: #C0C0C0;
+            font-family: 'Lucida Console', 'Courier New', monospace;
+            font-size: 12px;
+            padding: 5px;
+            overflow-y: scroll;
+        }
+        .cmd-line {
+            display: flex;
+        }
+        .cmd-prompt {
+            white-space: pre;
+        }
+        #cmd-input {
+            background: transparent;
+            border: none;
+            color: #C0C0C0;
+            font-family: inherit;
+            font-size: inherit;
+            flex-grow: 1;
+            outline: none;
+            padding-left: 5px;
+        }
+        @keyframes blink {
+            from, to {  border-right: 7px solid #C0C0C0; }
+            50% { border-right-color: transparent; }
+        }
+        #command-prompt-window.active #cmd-input {
+            animation: blink 1s step-end infinite;
+        }
+
+
         /* --- XP Taskbar --- */
         .taskbar {
             position: absolute; bottom: 0; left: 0; right: 0; height: 30px;
@@ -162,22 +398,14 @@
             align-items: center; padding: 0; z-index: 1000;
         }
         .start-button {
-            background: linear-gradient(to top, #3b8728, #63c84e);
-            color: white;
-            border: 1px solid #2a651a;
-            border-radius: 3px 10px 10px 3px;
-            margin: 0 0 0 3px;
-            padding: 2px 20px 2px 10px;
-            height: 27px;
-            box-sizing: border-box;
-            font-weight: bold;
-            font-size: 16px;
-            font-style: italic;
+            background: url('start.png') no-repeat center center;
+            background-size: 100% 100%;
+            border: none;
+            width: 104px;
+            height: 28px;
             cursor: pointer;
-            text-shadow: 1px 1px 3px rgba(0,0,0,0.6);
-            display: flex;
-            align-items: center;
-            box-shadow: inset 1px 1px 2px rgba(255, 255, 255, 0.5);
+            margin: 0 0 0 1px;
+            padding: 0;
         }
         .start-divider {
             width: 2px;
@@ -196,30 +424,70 @@
 
         /* --- XP Start Menu --- */
         .start-menu {
-            display: none; position: absolute; bottom: 30px; left: 0; width: 350px;
-            background: linear-gradient(to bottom, #2d6bce, #1646a5);
-            border: 1px solid #000; border-radius: 5px 5px 0 0; padding: 3px; z-index: 999;
+            display: none; position: absolute; bottom: 30px; left: 0; width: 400px;
+            background-color: #245edc;
+            border: 1px solid #000; 
+            border-top-right-radius: 5px; 
+            padding: 2px; 
+            z-index: 999;
         }
         .start-menu-header {
-            background: linear-gradient(to bottom, #6b92d6, #3164c3); padding: 5px; display: flex; align-items: center;
-            border-bottom: 1px solid #1646a5; color: white;
+            background: linear-gradient(to right, #1d43a9, #5681e1, #1d43a9); padding: 5px; display: flex; align-items: center;
+            color: white; border-bottom: 1px solid #4a80ef;
         }
-        .start-menu-header img { width: 40px; height: 40px; border-radius: 50%; margin-right: 10px; }
-        .start-menu-body { display: flex; }
-        .start-menu-left { background-color: #fff; width: 50%; padding: 5px; }
-        .start-menu-right { width: 50%; padding: 5px; }
-        .start-menu-item {
-            display: flex; align-items: center; padding: 5px; cursor: pointer; color: black;
+        .start-menu-header img { 
+            width: 48px; height: 48px; border: 2px solid white; 
+            margin-right: 10px; background-color: #ccc;
         }
-        .start-menu-item:hover { background-color: #316ac5; color: white; }
-        .start-menu-item img { width: 24px; height: 24px; margin-right: 8px; }
-        .start-menu-right .start-menu-item { color: white; }
-        .start-menu-right .start-menu-item:hover { background-color: #4c7dd0; }
+        .start-menu-header strong { font-size: 16px; font-weight: bold; }
+
+        .start-menu-body { display: flex; background: linear-gradient(to right, #ffffff 50%, #d6e8f6 50%); }
+        .start-menu-left, .start-menu-right { width: 50%; padding: 5px 0; }
         
+        .start-menu-item {
+            display: flex; align-items: center; padding: 5px 10px; cursor: pointer;
+        }
+        .start-menu-left .start-menu-item { color: black; }
+        .start-menu-left .start-menu-item:hover { background-color: #316ac5; color: white; }
+        .start-menu-right .start-menu-item { color: black; }
+        .start-menu-right .start-menu-item:hover { background-color: #316ac5; color: white; }
+        
+        .start-menu-item img, .start-menu-item svg { width: 32px; height: 32px; margin-right: 8px; }
+        .start-menu-right .start-menu-item img, .start-menu-right .start-menu-item svg { width: 24px; height: 24px; }
+        
+        .start-menu-item-text { display: flex; flex-direction: column; }
+        .start-menu-item-text strong { font-weight: bold; }
+        .start-menu-item-text span { color: #888; }
+        .start-menu-left .start-menu-item:hover .start-menu-item-text span { color: white; }
+        .start-menu-right .start-menu-item strong { font-weight: normal; }
+        .start-menu-right .start-menu-item:hover strong { color: white; }
+        
+        .start-menu-separator {
+            border-top: 1px solid #ccc;
+            margin: 5px 0;
+            height: 1px;
+        }
+        .start-menu-right .start-menu-separator { border-top: 1px solid #94b8e0; }
+
+        .start-menu-footer {
+            background-color: #245edc;
+            padding: 5px;
+            text-align: right;
+        }
+        .start-menu-footer button {
+            background: transparent; border: none; color: white;
+            cursor: pointer; font-size: 11px; display: inline-flex; align-items: center;
+        }
+        .start-menu-footer button:hover { text-decoration: underline; }
+        .start-menu-footer img { width: 20px; height: 20px; margin-right: 5px; }
+
+
         /* --- Preview Window --- */
         #preview-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: rgba(0,0,0,0.4); z-index: 2000;
+            background-color: transparent; /* No more dark overlay */
+            pointer-events: none; /* Make it unclickable */
+            z-index: 2000;
         }
         #preview-window {
             display: none; position: fixed; top: 50%; left: 50%;
@@ -254,20 +522,27 @@
                 justify-content: center;
                 gap: 2rem;
             }
-            .login-box {
-                position: static;
+             .login-box {
+                text-align: center;
             }
-            .login-footer {
+             .login-box p {
+                font-size: 14px;
+            }
+             .user-box {
+                flex-direction: column;
+            }
+            .login-footer-content {
                 flex-direction: column;
                 height: auto;
                 padding: 0.5rem;
                 text-align: center;
+                gap: 5px;
             }
             .window {
                 width: 95vw; /* Occupy most, but not all, of the screen */
                 height: 85vh;
             }
-            #info-window, #contact-window {
+            #info-window, #contact-window, #paint-window, #command-prompt-window {
                 width: 95vw;
                 height: 85vh;
             }
@@ -276,6 +551,7 @@
             }
             .start-menu {
                 width: calc(100% - 6px); /* Full width with padding */
+                max-width: 400px;
             }
             .desktop-icon {
                 width: 70px;
@@ -297,44 +573,92 @@
             <div id="user-profile" class="user-box">
                 <img src="https://img.icons8.com/fluency/96/user-male-circle.png" alt="User Profile">
                 <span class="username">Bigiz</span>
-                <p class="usermsg">after you log on, you can browse Bigiz's work</p>
             </div>
         </div>
         <div class="login-footer">
-            <button class="turn-off-btn">
-                <img src="https://www.freeiconspng.com/uploads/power-button-icon-3.png" alt="Turn Off">
-                Turn off computer
-            </button>
-            <span>After you log on, you can add or change accounts. Just go to Control Panel and click User Accounts.</span>
+            <div class="login-footer-content">
+                <button class="turn-off-btn">
+                    <img src="https://www.freeiconspng.com/uploads/power-button-icon-3.png" alt="Turn Off">
+                    Turn off computer
+                </button>
+                <span>After you log on, you can add or change accounts. Just go to Control Panel and click User Accounts.</span>
+            </div>
         </div>
     </div>
 
     <div class="screen">
         <!-- Desktop Area -->
         <main id="desktop">
-            <div class="desktop-icon" data-folder="documents">
-                <img src="https://img.icons8.com/color/48/000000/windows-xp-my-documents.png" alt="Documents"/>
-                <span>My Documents</span>
+            <div class="desktop-icon" data-folder="images">
+                <img src="Picture.ico" alt="Pictures"/>
+                <span>My Pictures</span>
+            </div>
+            <div class="desktop-icon" data-folder="videos">
+                 <img src="Picture.ico" alt="Videos" style="filter: hue-rotate(180deg);"/>
+                <span>My Videos</span>
             </div>
             <div class="desktop-icon" data-folder="music">
-                    <img src="https://img.icons8.com/color/48/000000/windows-xp-my-music.png" alt="Music"/>
-                    <span>My Music</span>
-                </div>
-                <div class="desktop-icon" data-folder="images">
-                    <img src="https://img.icons8.com/color/48/000000/windows-xp-my-pictures.png" alt="Pictures"/>
-                    <span>My Pictures</span>
-                </div>
-                <div class="desktop-icon" data-folder="videos">
-                    <img src="https://img.icons8.com/color/48/windows-movie-maker.png" alt="Videos"/>
-                    <span>My Videos</span>
-                </div>
-            </main>
+                <img src="Document.ico" alt="Music" style="filter: hue-rotate(240deg) saturate(2);"/>
+                <span>My Music</span>
+            </div>
+            <div class="desktop-icon" data-folder="documents">
+                <img src="Document.ico" alt="Documents"/>
+                <span>My Documents</span>
+            </div>
+            <div id="recycle-bin" class="desktop-icon" data-window="recycle-bin">
+                <img src="Recycle Bin.ico" alt="Recycle Bin"/>
+                <span>Recycle Bin</span>
+            </div>
+        </main>
 
             <!-- --- Windows --- -->
             <div id="file-explorer-window" class="window">
                 <div class="window-header">
                     <span class="window-title">Explorer</span>
                     <div class="window-buttons"><button class="close-btn">r</button></div>
+                </div>
+                <div class="window-toolbar">
+                    <button class="nav-button back-button">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"/><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/><g id="SVGRepo_iconCarrier"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="#38a12f" stroke="#ffffff" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.25 8.75L9.75 12L13.25 15.25" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg>
+                        <span>Back</span>
+                    </button>
+                    <button class="nav-button forward-button">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"/><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/><g id="SVGRepo_iconCarrier"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" transform="rotate(-180 12 12)" fill="#38a12f" stroke="#ffffff" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.75 8.75L14.25 12L10.75 15.25" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg>
+                    </button>
+                </div>
+                <div class="window-content"><div class="file-grid"></div></div>
+            </div>
+
+            <div id="my-computer-window" class="window">
+                <div class="window-header">
+                    <span class="window-title">My Computer</span>
+                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                </div>
+                <div class="window-toolbar">
+                     <button class="nav-button back-button">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"/><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/><g id="SVGRepo_iconCarrier"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="#38a12f" stroke="#ffffff" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.25 8.75L9.75 12L13.25 15.25" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg>
+                        <span>Back</span>
+                    </button>
+                    <button class="nav-button forward-button">
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"/><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/><g id="SVGRepo_iconCarrier"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" transform="rotate(-180 12 12)" fill="#38a12f" stroke="#ffffff" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.75 8.75L14.25 12L10.75 15.25" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg>
+                    </button>
+                </div>
+                <div class="window-content"><div class="file-grid"></div></div>
+            </div>
+
+             <div id="recycle-bin-window" class="window">
+                <div class="window-header">
+                    <span class="window-title">Recycle Bin</span>
+                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                </div>
+                <div class="window-toolbar">
+                     <button class="nav-button back-button" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"/><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/><g id="SVGRepo_iconCarrier"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" fill="#38a12f" stroke="#ffffff" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M13.25 8.75L9.75 12L13.25 15.25" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg>
+                        <span>Back</span>
+                    </button>
+                    <button class="nav-button forward-button" disabled>
+                        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"/><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"/><g id="SVGRepo_iconCarrier"><path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" transform="rotate(-180 12 12)" fill="#38a12f" stroke="#ffffff" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/><path d="M10.75 8.75L14.25 12L10.75 15.25" stroke="#ffffff" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></g></svg>
+                    </button>
                 </div>
                 <div class="window-content"><div class="file-grid"></div></div>
             </div>
@@ -344,6 +668,7 @@
                     <span class="window-title">About Me</span>
                     <div class="window-buttons"><button class="close-btn">r</button></div>
                 </div>
+                <div class="window-toolbar"></div>
                 <div class="window-content"><p>This is my personal portfolio, designed to look like Windows XP! I am a passionate developer who loves creating unique web experiences.</p></div>
             </div>
 
@@ -352,9 +677,67 @@
                     <span class="window-title">Contact</span>
                     <div class="window-buttons"><button class="close-btn">r</button></div>
                 </div>
+                <div class="window-toolbar"></div>
                 <div class="window-content"><p>You can reach me at:</p><ul><li>Email: myemail@example.com</li><li>LinkedIn: /in/myprofile</li></ul></div>
             </div>
+
+            <div id="paint-window" class="window">
+                <div class="window-header">
+                   <span class="window-title">untitled - Paint</span>
+                   <div class="window-buttons"><button class="close-btn">r</button></div>
+               </div>
+                <div class="window-toolbar"></div>
+               <div class="window-content">
+                   <div class="paint-toolbar">
+                        <div class="tool-group">
+                            <div class="tool active" id="pencil-tool" title="Pencil">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/></svg>
+                            </div>
+                            <div class="tool" id="eraser-tool" title="Eraser">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m7 21-4.3-4.3c-1-1-1-2.5 0-3.4l9.6-9.6c1-1 2.5-1 3.4 0l4.3 4.3c1 1 1 2.5 0 3.4l-9.6 9.6c-1 1-2.5 1-3.4 0Z"/><path d="m18 11 4 4"/><path d="m2 16 6 6"/></svg>
+                            </div>
+                        </div>
+                        <div class="paint-palette"></div>
+                   </div>
+                   <div class="paint-canvas-area">
+                       <canvas id="paint-canvas"></canvas>
+                   </div>
+               </div>
+           </div>
+
+            <div id="minesweeper-window" class="window">
+                 <div class="window-header">
+                    <span class="window-title">Minesweeper</span>
+                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                </div>
+                <div class="window-content">
+                    <div class="mine-header">
+                        <div class="mine-counter" id="mine-count">010</div>
+                        <button class="smiley-btn" id="smiley-btn">🙂</button>
+                        <div class="mine-counter" id="mine-timer">000</div>
+                    </div>
+                    <div class="mine-grid" id="mine-grid"></div>
+                </div>
+            </div>
             
+            <div id="command-prompt-window" class="window">
+                 <div class="window-header">
+                    <span class="window-title">C:\WINDOWS\system32\cmd.exe</span>
+                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                </div>
+                <div class="window-content" onclick="document.getElementById('cmd-input').focus()">
+                    <div id="cmd-output">
+                        <div>Microsoft Windows XP [Version 5.1.2600]</div>
+                        <div>(C) Copyright 1985-2001 Microsoft Corp.</div>
+                        <br>
+                    </div>
+                    <div class="cmd-line">
+                        <span class="cmd-prompt">C:\Documents and Settings\Bigiz></span>
+                        <input type="text" id="cmd-input" autocomplete="off" spellcheck="false">
+                    </div>
+                </div>
+            </div>
+
             <!-- --- Preview Window --- -->
             <div id="preview-overlay"></div>
             <div id="preview-window" class="window">
@@ -369,47 +752,70 @@
             <!-- Start Menu -->
             <div id="start-menu" class="start-menu">
                 <div class="start-menu-header">
-                    <img src="https://img.icons8.com/fluency/48/user-male-circle.png" alt="User"/>
-                    <strong>Alex Doe</strong>
+                    <img src="https://img.icons8.com/fluency/96/user-male-circle.png" alt="User"/>
+                    <strong>Bigiz</strong>
                 </div>
                 <div class="start-menu-body">
                     <div class="start-menu-left">
                         <div class="start-menu-item" data-window="info">
-                            <img src="https://img.icons8.com/color/48/ms-word-2.png" alt="Info"/>
-                            <span>Info</span>
+                            <img src="Info.ico" alt="Info"/>
+                            <div class="start-menu-item-text"><strong>Info</strong><span>About this portfolio</span></div>
                         </div>
                         <div class="start-menu-item" data-window="contact">
-                             <img src="https://img.icons8.com/color/48/ms-outlook.png" alt="Contact"/>
-                            <span>Contact</span>
+                             <img src="Info.ico" alt="Contact" style="filter: hue-rotate(180deg)"/>
+                             <div class="start-menu-item-text"><strong>Contact</strong><span>Get in touch</span></div>
+                        </div>
+                        <div class="start-menu-separator"></div>
+                        <div class="start-menu-item" data-window="minesweeper">
+                            <img src="Minesweeper.ico" alt="Minesweeper"/>
+                            <div class="start-menu-item-text"><strong>Minesweeper</strong></div>
+                        </div>
+                        <div class="start-menu-item" data-window="paint">
+                            <img src="Paint.ico" alt="Paint"/>
+                            <div class="start-menu-item-text"><strong>Paint</strong></div>
                         </div>
                     </div>
                     <div class="start-menu-right">
-                         <div class="start-menu-item" data-folder="documents">
-                            <img src="https://img.icons8.com/color/48/000000/windows-xp-my-documents.png" alt="Documents"/>
-                            <span>My Documents</span>
+                        <div class="start-menu-item" data-folder="images">
+                           <img src="Picture.ico" alt="Pictures"/>
+                           <div class="start-menu-item-text"><strong>My Pictures</strong></div>
+                       </div>
+                       <div class="start-menu-item" data-folder="videos">
+                           <img src="Picture.ico" alt="Videos" style="filter: hue-rotate(180deg) brightness(1.1);"/>
+                           <div class="start-menu-item-text"><strong>My Videos</strong></div>
+                       </div>
+                        <div class="start-menu-item" data-folder="music">
+                           <img src="Document.ico" alt="Music" style="filter: hue-rotate(240deg) saturate(2);"/>
+                          <div class="start-menu-item-text"><strong>My Music</strong></div>
+                       </div>
+                        <div class="start-menu-item" data-folder="documents">
+                            <img src="Document.ico" alt="Documents"/>
+                           <div class="start-menu-item-text"><strong>My Documents</strong></div>
+                       </div>
+                        <div class="start-menu-separator"></div>
+                        <div class="start-menu-item" data-window="my-computer">
+                            <img src="My Computer.ico" alt="My Computer"/>
+                            <div class="start-menu-item-text"><strong>My Computer</strong></div>
                         </div>
-                         <div class="start-menu-item" data-folder="images">
-                            <img src="https://img.icons8.com/color/48/000000/windows-xp-my-pictures.png" alt="Pictures"/>
-                            <span>My Pictures</span>
-                        </div>
-                         <div class="start-menu-item" data-folder="music">
-                            <img src="https://img.icons8.com/color/48/000000/windows-xp-my-music.png" alt="Music"/>
-                            <span>My Music</span>
-                        </div>
-                         <div class="start-menu-item" data-folder="videos">
-                            <img src="https://img.icons8.com/color/48/windows-movie-maker.png" alt="Videos"/>
-                            <span>My Videos</span>
+                        <div class="start-menu-item" data-window="command-prompt">
+                            <img src="https://www.winhistory.de/more/winstart/icons/cmd.png" alt="Command Prompt"/>
+                           <div class="start-menu-item-text"><strong>Command Prompt</strong></div>
                         </div>
                     </div>
+                </div>
+                 <div class="start-menu-footer">
+                    <button id="log-off-btn">
+                        <img src="exit.ico" alt="Log Off"/> Log Off
+                    </button>
+                    <button id="turn-off-btn">
+                        <img src="exit.ico" alt="Turn Off"/> Turn Off Computer
+                    </button>
                 </div>
             </div>
 
             <!-- Taskbar -->
             <div class="taskbar">
-                <button id="start-button" class="start-button">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/Windows_XP_Icon.svg/20px-Windows_XP_Icon.svg.png" style="width:20px; height:20px; vertical-align:middle; margin-right: 4px;" alt="Start"/>
-                    start
-                </button>
+                <button id="start-button" class="start-button"></button>
                 <div class="start-divider"></div>
                 <div class="system-tray" id="clock">16:14 PM</div>
             </div>
@@ -433,8 +839,17 @@
             const previewTitle = document.getElementById('preview-title');
             const previewContent = document.getElementById('preview-content');
             const previewCloseBtn = document.getElementById('preview-close-btn');
+            
+            const logOffBtn = document.getElementById('log-off-btn');
+            const turnOffBtn = document.getElementById('turn-off-btn');
+
+            const cmdWindow = document.getElementById('command-prompt-window');
+            const cmdOutput = document.getElementById('cmd-output');
+            const cmdInput = document.getElementById('cmd-input');
 
             let highestZ = 10;
+            let navigationHistory = [];
+            let historyIndex = -1;
 
             // --- Login Logic ---
             userProfile.addEventListener('click', () => {
@@ -450,32 +865,119 @@
                     }, 50);
                 }, 500);
             });
+            
+            // --- Log Off Logic ---
+            const logOff = () => {
+                allWindows.forEach(win => closeWindow(win));
+                startMenu.style.display = 'none';
+                desktopScreen.style.opacity = '0';
+                setTimeout(() => {
+                    desktopScreen.style.display = 'none';
+                    loginScreen.style.display = 'flex';
+                    setTimeout(() => {
+                        loginScreen.style.opacity = '1';
+                    }, 50);
+                }, 500);
+            };
+
+            logOffBtn.addEventListener('click', logOff);
+            turnOffBtn.addEventListener('click', logOff);
+
 
             // --- Project Data with content for previews ---
             const projects = {
                 documents: [
-                    { name: 'Resume.doc', icon: 'https://img.icons8.com/color/48/ms-word-2.png', type: 'document', content: 'This is a placeholder for my resume document.' },
-                    { name: 'Presentation.ppt', icon: 'https://img.icons8.com/color/48/ms-powerpoint.png', type: 'document', content: 'This is a placeholder for a presentation.' },
+                    { name: 'Resume.doc', icon: 'Document.ico', type: 'document', content: 'This is a placeholder for my resume document.' },
+                    { name: 'Presentation.ppt', icon: 'Document.ico', type: 'document', content: 'This is a placeholder for a presentation.' },
                 ],
                 music: [
-                    { name: 'Ambient Track.mp3', icon: 'https://img.icons8.com/color/48/000000/wma.png', type: 'audio', content: 'https://www.w3schools.com/html/horse.mp3' },
+                    { name: 'Ambient Track.mp3', icon: 'Document.ico', type: 'audio', content: 'https://www.w3schools.com/html/horse.mp3' },
                 ],
                 images: [
-                    { name: 'Landscape.jpg', icon: 'https://img.icons8.com/color/48/jpg.png', type: 'image', content: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470' },
+                    { name: 'Landscape.jpg', icon: 'Picture.ico', type: 'image', content: 'https://images.unsplash.com/photo-1501785888041-af3ef285b470' },
                 ],
                 videos: [ 
-                    { name: 'Tutorial.avi', icon: 'https://img.icons8.com/color/48/avi.png', type: 'video', content: 'https://www.w3schools.com/html/mov_bbb.mp4' } 
+                    { name: 'Tutorial.avi', icon: 'Picture.ico', type: 'video', content: 'https://www.w3schools.com/html/mov_bbb.mp4' } 
                 ]
             };
             
+            // --- Navigation History ---
+            const updateNavButtons = () => {
+                document.querySelectorAll('.back-button').forEach(btn => btn.disabled = historyIndex <= 0);
+                document.querySelectorAll('.forward-button').forEach(btn => btn.disabled = historyIndex >= navigationHistory.length - 1);
+            };
+            
+            const navigateTo = (state, newHistory = false) => {
+                 if(newHistory) {
+                    navigationHistory = [state];
+                    historyIndex = 0;
+                } else {
+                    navigationHistory = navigationHistory.slice(0, historyIndex + 1);
+                    navigationHistory.push(state);
+                    historyIndex++;
+                }
+
+                openWindow(state.id, state.title);
+                if (state.id === 'file-explorer') {
+                    populateFolder(state.folderType);
+                } else if (state.id === 'my-computer') {
+                    populateMyComputer();
+                } else if (state.id === 'recycle-bin') {
+                    populateRecycleBin();
+                }
+
+                updateNavButtons();
+            };
+
+            const navigateBack = () => {
+                if (historyIndex > 0) {
+                    historyIndex--;
+                    const state = navigationHistory[historyIndex];
+                    openWindow(state.id, state.title);
+                     if (state.id === 'file-explorer') {
+                        populateFolder(state.folderType);
+                    } else if (state.id === 'my-computer') {
+                        populateMyComputer();
+                    } else if (state.id === 'recycle-bin') {
+                        populateRecycleBin();
+                    }
+                    updateNavButtons();
+                }
+            };
+
+            const navigateForward = () => {
+                if (historyIndex < navigationHistory.length - 1) {
+                    historyIndex++;
+                    const state = navigationHistory[historyIndex];
+                    openWindow(state.id, state.title);
+                    if (state.id === 'file-explorer') {
+                        populateFolder(state.folderType);
+                    } else if (state.id === 'my-computer') {
+                        populateMyComputer();
+                    } else if (state.id === 'recycle-bin') {
+                        populateRecycleBin();
+                    }
+                    updateNavButtons();
+                }
+            };
+            
+            document.querySelectorAll('.back-button').forEach(btn => btn.addEventListener('click', navigateBack));
+            document.querySelectorAll('.forward-button').forEach(btn => btn.addEventListener('click', navigateForward));
+
+
             // --- Window Management ---
             const openWindow = (id, title) => {
+                document.querySelectorAll('#file-explorer-window, #my-computer-window, #recycle-bin-window').forEach(win => win.style.display = 'none');
+
                 const windowEl = document.getElementById(id + '-window');
                 if (windowEl) {
                     windowEl.style.display = 'block';
                     windowEl.style.zIndex = ++highestZ;
+                    
+                    allWindows.forEach(w => w.classList.remove('active'));
+                    windowEl.classList.add('active');
 
-                    // Always center new windows
+
                     const screenRect = desktopScreen.getBoundingClientRect();
                     const windowWidth = windowEl.offsetWidth;
                     const windowHeight = windowEl.offsetHeight;
@@ -490,17 +992,19 @@
                         windowEl.querySelector('.window-title').textContent = title;
                     }
                 }
+                 updateNavButtons();
             };
             
             const closeWindow = (windowEl) => {
                 windowEl.style.display = 'none';
             };
 
-            // --- Event Listeners for Windows ---
             allWindows.forEach(windowEl => {
                 const closeBtn = windowEl.querySelector('.close-btn');
                 windowEl.addEventListener('mousedown', () => {
                     windowEl.style.zIndex = ++highestZ;
+                    allWindows.forEach(w => w.classList.remove('active'));
+                    windowEl.classList.add('active');
                 });
                 if(closeBtn && !windowEl.id.includes('preview')) {
                     closeBtn.addEventListener('click', (e) => {
@@ -510,22 +1014,63 @@
                 }
             });
 
-            // --- Desktop Icon Logic ---
+            // --- Folder and File Population ---
+            const populateFolder = (folderType) => {
+                const files = projects[folderType] || [];
+                const container = document.getElementById('file-explorer-window').querySelector('.file-grid');
+                container.innerHTML = files.map(file => {
+                    const iconHtml = `<img src="${file.icon}" alt="${file.name}"/>`;
+                    return `
+                    <div class="file-item" data-name="${file.name}" data-type="${file.type}" data-content="${file.content}">
+                        ${iconHtml}
+                        <span>${file.name}</span>
+                    </div>`;
+                }).join('');
+            };
+
+            const populateMyComputer = () => {
+                const container = document.getElementById('my-computer-window').querySelector('.file-grid');
+                const folders = [
+                    { name: 'My Pictures', folder: 'images', icon: `Picture.ico` },
+                    { name: 'My Videos', folder: 'videos', icon: `Picture.ico` },
+                    { name: 'My Music', folder: 'music', icon: `Document.ico` },
+                    { name: 'My Documents', folder: 'documents', icon: `Document.ico` }
+                ];
+
+                container.innerHTML = folders.map(folder => `
+                    <div class="file-item" data-folder="${folder.folder}">
+                        <img src="${folder.icon}" alt="${folder.name}"/>
+                        <span>${folder.name}</span>
+                    </div>`).join('');
+            };
+
+            const populateRecycleBin = () => {
+                const container = document.getElementById('recycle-bin-window').querySelector('.file-grid');
+                container.innerHTML = '<p style="text-align: center; width: 100%; color: #808080;">This folder is empty.</p>';
+            };
+
+            // --- Desktop Icon Click Handlers ---
             desktopIcons.forEach(icon => {
                 icon.addEventListener('click', () => {
                     const folderType = icon.dataset.folder;
-                    const title = { music: 'My Music', images: 'My Pictures', videos: 'My Videos', documents: 'My Documents'}[folderType];
-                    openWindow('file-explorer', title);
-                    
-                    const files = projects[folderType] || [];
-                    const container = document.getElementById('file-explorer-window').querySelector('.file-grid');
-                    container.innerHTML = files.map(file => `
-                        <div class="file-item" data-name="${file.name}" data-type="${file.type}" data-content="${file.content}">
-                            <img src="${file.icon}" alt="${file.name}"/>
-                            <span>${file.name}</span>
-                        </div>
-                    `).join('');
+                    const windowId = icon.dataset.window;
+                    if (folderType) {
+                        const title = { music: 'My Music', images: 'My Pictures', videos: 'My Videos', documents: 'My Documents'}[folderType];
+                        navigateTo({ id: 'file-explorer', title: title, folderType: folderType }, true);
+                    } else if (windowId === 'recycle-bin') {
+                        navigateTo({id: 'recycle-bin', title: 'Recycle Bin'}, true);
+                    }
                 });
+            });
+
+            // --- My Computer Click Handler ---
+            document.getElementById('my-computer-window').querySelector('.file-grid').addEventListener('click', (e) => {
+                const folderItem = e.target.closest('.file-item');
+                if (folderItem) {
+                    const folderType = folderItem.dataset.folder;
+                    const title = { music: 'My Music', images: 'My Pictures', videos: 'My Videos', documents: 'My Documents'}[folderType];
+                    navigateTo({ id: 'file-explorer', title: title, folderType: folderType });
+                }
             });
             
             // --- File Preview Logic ---
@@ -533,43 +1078,33 @@
                 previewTitle.textContent = name;
                 let contentHTML = '';
                 switch(type) {
-                    case 'image':
-                        contentHTML = `<img src="${content}" alt="${name}">`;
-                        break;
-                    case 'video':
-                        contentHTML = `<video src="${content}" controls autoplay></video>`;
-                        break;
-                    case 'audio':
-                        contentHTML = `<audio src="${content}" controls autoplay></audio>`;
-                        break;
-                    case 'document':
-                        contentHTML = `<p style="padding: 1rem; text-align: left;">${content}</p>`;
-                        break;
+                    case 'image': contentHTML = `<img src="${content}" alt="${name}">`; break;
+                    case 'video': contentHTML = `<video src="${content}" controls autoplay></video>`; break;
+                    case 'audio': contentHTML = `<audio src="${content}" controls autoplay></audio>`; break;
+                    case 'document': contentHTML = `<p style="padding: 1rem; text-align: left;">${content}</p>`; break;
                 }
                 previewContent.innerHTML = contentHTML;
-                previewOverlay.style.zIndex = ++highestZ;
-                previewWindow.style.zIndex = ++highestZ;
+                previewOverlay.style.zIndex = 3000;
+                previewWindow.style.zIndex = 3001;
                 previewOverlay.style.display = 'block';
                 previewWindow.style.display = 'block';
             };
 
             const closePreview = () => {
-                previewContent.innerHTML = ''; // Stop video/audio from playing in background
+                previewContent.innerHTML = '';
                 previewOverlay.style.display = 'none';
                 previewWindow.style.display = 'none';
             };
 
             document.getElementById('file-explorer-window').querySelector('.file-grid').addEventListener('click', (e) => {
                 const fileItem = e.target.closest('.file-item');
-                if (fileItem) {
+                if (fileItem && fileItem.dataset.name) {
                     const { name, type, content } = fileItem.dataset;
                     openPreview(name, type, content);
                 }
             });
 
             previewCloseBtn.addEventListener('click', closePreview);
-            previewOverlay.addEventListener('click', closePreview);
-
 
             // --- Start Menu Logic ---
             const toggleStartMenu = (e) => {
@@ -589,15 +1124,293 @@
                     const windowId = item.dataset.window;
                     const folderId = item.dataset.folder;
                     if (windowId) {
-                        openWindow(windowId);
+                        if (windowId === 'my-computer') {
+                             navigateTo({id: 'my-computer', title: 'My Computer'}, true);
+                        } else {
+                            openWindow(windowId);
+                             if (windowId === 'paint') initPaint();
+                             if (windowId === 'minesweeper') initMinesweeper();
+                             if (windowId === 'command-prompt') initCmd();
+                        }
                     }
                     if (folderId) {
-                        const correspondingIcon = document.querySelector(`.desktop-icon[data-folder="${folderId}"]`);
-                        correspondingIcon.dispatchEvent(new Event('click'));
+                        const desktopIconToClick = document.querySelector(`.desktop-icon[data-folder="${folderId}"]`);
+                        desktopIconToClick.dispatchEvent(new Event('click'));
                     }
                     startMenu.style.display = 'none';
                 });
             });
+
+            // --- Paint App Logic ---
+            let paintCtx, isPainting = false, paintColor = '#000000', currentTool = 'pencil';
+            const initPaint = () => {
+                const canvas = document.getElementById('paint-canvas');
+                const canvasArea = canvas.parentElement;
+                paintCtx = canvas.getContext('2d');
+
+                canvas.width = canvasArea.clientWidth;
+                canvas.height = canvasArea.clientHeight;
+                paintCtx.fillStyle = "white";
+                paintCtx.fillRect(0, 0, canvas.width, canvas.height);
+
+                const palette = document.querySelector('.paint-palette');
+                palette.innerHTML = ''; 
+                const colors = ['#000000', '#FFFFFF', '#808080', '#C0C0C0', '#800000', '#FF0000', '#808000', '#FFFF00', '#008000', '#00FF00', '#008080', '#00FFFF', '#000080', '#0000FF', '#800080', '#FF00FF',
+                               '#700000', '#703800', '#707000', '#007000', '#007070', '#000070', '#700070', '#703838', '#707038', '#007038', '#387070', '#000000', '#383870'];
+                colors.forEach((color, i) => {
+                    const colorBox = document.createElement('div');
+                    colorBox.className = 'color-box';
+                    colorBox.style.backgroundColor = color;
+                    if (i === 0) colorBox.classList.add('active');
+                    colorBox.addEventListener('click', () => {
+                        document.querySelector('.color-box.active').classList.remove('active');
+                        colorBox.classList.add('active');
+                        paintColor = color;
+                    });
+                    palette.appendChild(colorBox);
+                });
+                
+                const pencilTool = document.getElementById('pencil-tool');
+                const eraserTool = document.getElementById('eraser-tool');
+                
+                pencilTool.addEventListener('click', () => {
+                    currentTool = 'pencil';
+                    pencilTool.classList.add('active');
+                    eraserTool.classList.remove('active');
+                });
+                eraserTool.addEventListener('click', () => {
+                    currentTool = 'eraser';
+                    eraserTool.classList.add('active');
+                    pencilTool.classList.remove('active');
+                });
+
+                const startDraw = (e) => { isPainting = true; draw(e); }
+                const endDraw = () => { isPainting = false; paintCtx.beginPath(); }
+                const draw = (e) => {
+                    if (!isPainting) return;
+                    const rect = canvas.getBoundingClientRect();
+                    const x = e.clientX - rect.left;
+                    const y = e.clientY - rect.top;
+                    paintCtx.lineWidth = (currentTool === 'eraser') ? 10 : 2;
+                    paintCtx.lineCap = 'round';
+                    paintCtx.strokeStyle = (currentTool === 'eraser') ? '#FFFFFF' : paintColor;
+                    paintCtx.lineTo(x, y);
+                    paintCtx.stroke();
+                    paintCtx.beginPath();
+                    paintCtx.moveTo(x, y);
+                }
+
+                canvas.addEventListener('mousedown', startDraw);
+                canvas.addEventListener('mouseup', endDraw);
+                canvas.addEventListener('mousemove', draw);
+                canvas.addEventListener('mouseleave', endDraw);
+            };
+
+            // --- Minesweeper Logic ---
+            let mineGrid, mineTimerInterval, mineGameOver;
+            const MINE_ROWS = 9, MINE_COLS = 9, MINE_COUNT = 10;
+            
+            const initMinesweeper = () => {
+                const gridEl = document.getElementById('mine-grid');
+                const smileyBtn = document.getElementById('smiley-btn');
+                const mineCountEl = document.getElementById('mine-count');
+                const mineTimerEl = document.getElementById('mine-timer');
+                let time = 0;
+                
+                mineGameOver = false;
+                smileyBtn.innerHTML = '<img src="reset.ico" alt="Reset"/>';
+                mineCountEl.textContent = String(MINE_COUNT).padStart(3,'0');
+                mineTimerEl.textContent = '000';
+                clearInterval(mineTimerInterval);
+                
+                mineTimerInterval = setInterval(() => {
+                    if (!mineGameOver) {
+                        time++;
+                        mineTimerEl.textContent = String(time).padStart(3, '0');
+                    }
+                }, 1000);
+
+                mineGrid = Array(MINE_ROWS).fill(null).map(() => Array(MINE_COLS).fill(null).map(() => ({mine: false, revealed: false, flagged: false, count: 0 })));
+
+                let minesPlaced = 0;
+                while(minesPlaced < MINE_COUNT) {
+                    const row = Math.floor(Math.random() * MINE_ROWS);
+                    const col = Math.floor(Math.random() * MINE_COLS);
+                    if (!mineGrid[row][col].mine) {
+                        mineGrid[row][col].mine = true;
+                        minesPlaced++;
+                    }
+                }
+
+                for (let r = 0; r < MINE_ROWS; r++) {
+                    for (let c = 0; c < MINE_COLS; c++) {
+                        if (mineGrid[r][c].mine) continue;
+                        let count = 0;
+                        for(let i = -1; i <= 1; i++) {
+                            for(let j = -1; j <= 1; j++) {
+                                if(r+i >= 0 && r+i < MINE_ROWS && c+j >= 0 && c+j < MINE_COLS && mineGrid[r+i][c+j].mine) {
+                                    count++;
+                                }
+                            }
+                        }
+                        mineGrid[r][c].count = count;
+                    }
+                }
+                
+                gridEl.innerHTML = '';
+                gridEl.style.gridTemplateColumns = `repeat(${MINE_COLS}, 16px)`;
+                for (let r = 0; r < MINE_ROWS; r++) {
+                    for (let c = 0; c < MINE_COLS; c++) {
+                        const cell = document.createElement('div');
+                        cell.className = 'mine-cell';
+                        cell.dataset.row = r;
+                        cell.dataset.col = c;
+                        cell.addEventListener('click', () => onCellClick(r, c));
+                        cell.addEventListener('contextmenu', (e) => {
+                            e.preventDefault();
+                            onCellRightClick(r, c);
+                        });
+                        gridEl.appendChild(cell);
+                    }
+                }
+            };
+
+            const onCellClick = (r, c) => {
+                if(mineGameOver || mineGrid[r][c].revealed || mineGrid[r][c].flagged) return;
+
+                if (mineGrid[r][c].mine) {
+                    mineGameOver = true;
+                    document.getElementById('smiley-btn').innerHTML = '<img src="lost.ico" alt="Lost"/>';
+                    revealAllMines();
+                    return;
+                }
+                
+                revealCell(r,c);
+                checkWin();
+            };
+
+            const onCellRightClick = (r, c) => {
+                if(mineGameOver || mineGrid[r][c].revealed) return;
+                mineGrid[r][c].flagged = !mineGrid[r][c].flagged;
+                updateGrid();
+            };
+
+            const revealCell = (r, c) => {
+                if (r < 0 || r >= MINE_ROWS || c < 0 || c >= MINE_COLS || mineGrid[r][c].revealed) return;
+                
+                mineGrid[r][c].revealed = true;
+                if(mineGrid[r][c].count === 0) {
+                    for(let i = -1; i <= 1; i++) {
+                        for(let j = -1; j <= 1; j++) {
+                            revealCell(r+i, c+j);
+                        }
+                    }
+                }
+                updateGrid();
+            };
+            
+            const revealAllMines = () => {
+                for (let r = 0; r < MINE_ROWS; r++) {
+                    for (let c = 0; c < MINE_COLS; c++) {
+                        if (mineGrid[r][c].mine) {
+                             const cellEl = document.querySelector(`.mine-cell[data-row='${r}'][data-col='${c}']`);
+                             cellEl.classList.add('mine');
+                        }
+                    }
+                }
+            };
+            
+            const checkWin = () => {
+                let revealedCount = 0;
+                for (let r = 0; r < MINE_ROWS; r++) {
+                    for (let c = 0; c < MINE_COLS; c++) {
+                       if(mineGrid[r][c].revealed) revealedCount++;
+                    }
+                }
+                if (revealedCount === MINE_ROWS * MINE_COLS - MINE_COUNT) {
+                    mineGameOver = true;
+                    document.getElementById('smiley-btn').innerHTML = '<img src="reset.ico" alt="Win"/>';
+                }
+            };
+
+            const updateGrid = () => {
+                let flags = 0;
+                for (let r = 0; r < MINE_ROWS; r++) {
+                    for (let c = 0; c < MINE_COLS; c++) {
+                        const cell = mineGrid[r][c];
+                        const cellEl = document.querySelector(`.mine-cell[data-row='${r}'][data-col='${c}']`);
+                        cellEl.className = 'mine-cell'; // reset
+                        if (cell.flagged) {
+                            cellEl.classList.add('flagged');
+                            flags++;
+                        }
+                        if (cell.revealed) {
+                            cellEl.classList.add('revealed');
+                            if (cell.count > 0) {
+                                cellEl.textContent = cell.count;
+                                cellEl.classList.add('c' + cell.count);
+                            }
+                        }
+                    }
+                }
+                document.getElementById('mine-count').textContent = String(MINE_COUNT - flags).padStart(3, '0');
+            };
+
+            document.getElementById('smiley-btn').addEventListener('click', initMinesweeper);
+
+            // --- Command Prompt Logic ---
+            const initCmd = () => {
+                cmdInput.focus();
+                cmdInput.onkeydown = (e) => {
+                    if (e.key === 'Enter') {
+                        const command = cmdInput.value.trim();
+                        const prompt = `<div class="cmd-line"><span class="cmd-prompt">C:\\Documents and Settings\\Bigiz></span>${command}</div>`;
+                        cmdOutput.insertAdjacentHTML('beforeend', prompt);
+
+                        if (command) {
+                            executeCommand(command);
+                        }
+                        
+                        cmdInput.value = '';
+                        cmdWindow.querySelector('.window-content').scrollTop = cmdWindow.querySelector('.window-content').scrollHeight;
+                    }
+                };
+            };
+
+            const executeCommand = (command) => {
+                const args = command.split(' ');
+                const cmd = args[0].toLowerCase();
+                let outputText = '';
+
+                switch(cmd) {
+                    case 'help':
+                        outputText = `Available commands:<br>HELP, CLS, DATE, TIME, ECHO, EXIT`;
+                        break;
+                    case 'cls':
+                        cmdOutput.innerHTML = '';
+                        break;
+                    case 'date':
+                        outputText = `The current date is: ${new Date().toLocaleDateString()}`;
+                        break;
+                    case 'time':
+                        outputText = `The current time is: ${new Date().toLocaleTimeString()}`;
+                        break;
+                    case 'echo':
+                        outputText = args.slice(1).join(' ');
+                        break;
+                    case 'exit':
+                        closeWindow(cmdWindow);
+                        break;
+                    default:
+                        outputText = `'${cmd}' is not recognized as an internal or external command.`;
+                        break;
+                }
+
+                if (outputText) {
+                    cmdOutput.insertAdjacentHTML('beforeend', `<div>${outputText}</div><br>`);
+                }
+            };
+
 
             // --- Clock ---
             const updateClock = () => {
@@ -610,3 +1423,6 @@
     </script>
 </body>
 </html>
+
+
+
