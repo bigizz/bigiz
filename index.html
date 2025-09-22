@@ -155,6 +155,8 @@
             background: linear-gradient(to right, #0055e7, #3780f1); color: white;
             font-weight: bold; padding: 3px 5px; display: flex; justify-content: space-between;
             align-items: center; cursor: default;
+            height: 25px;
+            box-sizing: border-box;
         }
         .window-buttons button {
             background-color: #c4d6f9; border: 1px outset #fff; width: 20px; height: 18px;
@@ -191,7 +193,7 @@
             margin-left: 2px;
         }
 
-        .window-content { padding: 10px; height: calc(100% - 25px - 31px - 20px); overflow-y: auto; color: #000; }
+        .window-content { padding: 10px; height: calc(100% - 25px - 31px); overflow-y: auto; color: #000; box-sizing: border-box;}
         .file-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 15px; }
         .file-item { display: flex; flex-direction: column; align-items: center; text-align: center; color: black; cursor: pointer;}
         .file-item:hover { background-color: #d4e5f7; }
@@ -398,12 +400,16 @@
             right: 0; 
             height: 30px;
             background: url('taskbar.png') repeat-x;
-            border-top: none;
-            display: flex;
-            align-items: center; 
-            padding: 0; 
             z-index: 1000;
         }
+        
+        .taskbar-content {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
         .start-button {
             background: url('start.png') no-repeat center center;
             border: none;
@@ -412,17 +418,14 @@
             cursor: pointer;
             padding: 0;
             font-size: 0; /* Hide any text remnants */
+            flex-shrink: 0; /* Prevent the button from shrinking */
         }
-        .start-divider {
-           display: none; /* Hide the old divider */
-        }
+        
         .system-tray { 
             background-color: transparent; 
             border: none;
-            padding: 3px 10px; 
+            padding: 0 10px; 
             color: white; 
-            margin-left: auto; 
-            margin-right: 5px;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
@@ -487,35 +490,44 @@
 
 
         /* --- Preview Window --- */
-        #preview-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background-color: transparent; /* No more dark overlay */
-            pointer-events: none; /* Make it unclickable */
-            z-index: 2000;
-        }
         #preview-window {
-            display: none; position: fixed; top: 50%; left: 50%;
+            display: none; 
+            position: fixed; 
+            top: 50%; 
+            left: 50%;
             transform: translate(-50%, -50%);
-            width: 80vw; max-width: 600px;
-            height: 80vh; max-height: 500px;
+            width: auto;
+            height: auto;
             background-color: #ECE9D8;
-            border: 1px solid #000; box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+            border: 1px solid #000; 
+            box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
             z-index: 2001;
         }
+        #preview-window.fixed-size {
+            width: 400px;
+            height: 200px;
+        }
+
         #preview-content {
-            padding: 10px;
-            height: calc(100% - 45px); /* total height minus padding and header */
+            height: auto;
+            padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
         }
         #preview-content img, #preview-content video {
-            max-width: 100%;
-            max-height: 100%;
-            object-fit: contain;
+            display: block;
+            max-width: 90vw;
+            max-height: calc(90vh - 25px); /* Account for header */
+            width: auto;
+            height: auto;
         }
         #preview-content audio {
             width: 100%;
+            padding: 10px;
+        }
+        #preview-content p {
+            padding: 10px;
         }
 
 
@@ -819,9 +831,10 @@
 
             <!-- Taskbar -->
             <div class="taskbar">
-                <button id="start-button" class="start-button"></button>
-                <div class="start-divider"></div>
-                <div class="system-tray" id="clock">16:14 PM</div>
+                <div class="taskbar-content">
+                    <button id="start-button" class="start-button"></button>
+                    <div class="system-tray" id="clock">16:14 PM</div>
+                </div>
             </div>
         </div>
 
@@ -1080,12 +1093,24 @@
             // --- File Preview Logic ---
             const openPreview = (name, type, content) => {
                 previewTitle.textContent = name;
+                previewWindow.classList.remove('fixed-size');
                 let contentHTML = '';
+
                 switch(type) {
-                    case 'image': contentHTML = `<img src="${content}" alt="${name}">`; break;
-                    case 'video': contentHTML = `<video src="${content}" controls autoplay></video>`; break;
-                    case 'audio': contentHTML = `<audio src="${content}" controls autoplay></audio>`; break;
-                    case 'document': contentHTML = `<p style="padding: 1rem; text-align: left;">${content}</p>`; break;
+                    case 'image':
+                        contentHTML = `<img src="${content}" alt="${name}">`;
+                        break;
+                    case 'video':
+                        contentHTML = `<video src="${content}" controls autoplay></video>`;
+                        break;
+                    case 'audio':
+                        previewWindow.classList.add('fixed-size');
+                        contentHTML = `<audio src="${content}" controls autoplay></audio>`;
+                        break;
+                    case 'document':
+                        previewWindow.classList.add('fixed-size');
+                        contentHTML = `<p>${content}</p>`;
+                        break;
                 }
                 previewContent.innerHTML = contentHTML;
                 previewOverlay.style.zIndex = 3000;
