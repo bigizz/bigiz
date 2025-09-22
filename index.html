@@ -163,7 +163,13 @@
             font-family: 'Webdings', 'Marlett'; font-size: 14px; line-height: 14px;
             margin-left: 2px; color: black;
         }
-        .window-buttons .close-btn { background-color: #e81123; color: white; }
+        .window-buttons .close-btn {
+    background-color: #e81123; /* Keeps the red background */
+    background-image: url('exit.ico');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: 14px 14px; /* Adjust size to fit nicely */
+}
         
         .window-toolbar {
             background-color: #ECE9D8;
@@ -610,11 +616,11 @@
                 <span>My Pictures</span>
             </div>
             <div class="desktop-icon" data-folder="videos">
-                 <img src="Picture.ico" alt="Videos" style="filter: hue-rotate(180deg);"/>
+                 <img src="Video.ico" alt="Videos" style="filter: hue-rotate(180deg);"/>
                 <span>My Videos</span>
             </div>
             <div class="desktop-icon" data-folder="music">
-                <img src="Document.ico" alt="Music" style="filter: hue-rotate(240deg) saturate(2);"/>
+                <img src="Music.ico" alt="Music" style="filter: hue-rotate(240deg) saturate(2);"/>
                 <span>My Music</span>
             </div>
             <div class="desktop-icon" data-folder="documents">
@@ -631,7 +637,7 @@
             <div id="file-explorer-window" class="window">
                 <div class="window-header">
                     <span class="window-title">Explorer</span>
-                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                    <div class="window-buttons"><button class="close-btn"></button></div>
                 </div>
                 <div class="window-toolbar">
                     <button class="nav-button back-button">
@@ -648,7 +654,7 @@
             <div id="my-computer-window" class="window">
                 <div class="window-header">
                     <span class="window-title">My Computer</span>
-                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                    <div class="window-buttons"><button class="close-btn"></button></div>
                 </div>
                 <div class="window-toolbar">
                      <button class="nav-button back-button">
@@ -665,7 +671,7 @@
              <div id="recycle-bin-window" class="window">
                 <div class="window-header">
                     <span class="window-title">Recycle Bin</span>
-                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                    <div class="window-buttons"><button class="close-btn"></button></div>
                 </div>
                 <div class="window-toolbar">
                      <button class="nav-button back-button" disabled>
@@ -682,7 +688,7 @@
             <div id="info-window" class="window">
                  <div class="window-header">
                     <span class="window-title">About Me</span>
-                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                    <div class="window-buttons"><button class="close-btn"></button></div>
                 </div>
                 <div class="window-toolbar"></div>
                 <div class="window-content"><p>This is my personal portfolio, designed to look like Windows XP! I am a passionate developer who loves creating unique web experiences.</p></div>
@@ -691,7 +697,7 @@
             <div id="contact-window" class="window">
                  <div class="window-header">
                     <span class="window-title">Contact</span>
-                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                    <div class="window-buttons"><button class="close-btn"></button></div>
                 </div>
                 <div class="window-toolbar"></div>
                 <div class="window-content"><p>You can reach me at:</p><ul><li>Email: myemail@example.com</li><li>LinkedIn: /in/myprofile</li></ul></div>
@@ -700,7 +706,7 @@
             <div id="paint-window" class="window">
                 <div class="window-header">
                    <span class="window-title">untitled - Paint</span>
-                   <div class="window-buttons"><button class="close-btn">r</button></div>
+                   <div class="window-buttons"><button class="close-btn"></button></div>
                </div>
                 <div class="window-toolbar"></div>
                <div class="window-content">
@@ -724,7 +730,7 @@
             <div id="minesweeper-window" class="window">
                  <div class="window-header">
                     <span class="window-title">Minesweeper</span>
-                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                    <div class="window-buttons"><button class="close-btn"></button></div>
                 </div>
                 <div class="window-content">
                     <div class="mine-header">
@@ -739,7 +745,7 @@
             <div id="command-prompt-window" class="window">
                  <div class="window-header">
                     <span class="window-title">C:\WINDOWS\system32\cmd.exe</span>
-                    <div class="window-buttons"><button class="close-btn">r</button></div>
+                    <div class="window-buttons"><button class="close-btn"></button></div>
                 </div>
                 <div class="window-content" onclick="document.getElementById('cmd-input').focus()">
                     <div id="cmd-output">
@@ -759,7 +765,7 @@
             <div id="preview-window" class="window">
                 <div class="window-header">
                     <span id="preview-title" class="window-title">Preview</span>
-                    <div class="window-buttons"><button id="preview-close-btn" class="close-btn">r</button></div>
+                    <div class="window-buttons"><button id="preview-close-btn" class="close-btn"></button></div>
                 </div>
                 <div id="preview-content"></div>
             </div>
@@ -778,7 +784,7 @@
                             <div class="start-menu-item-text"><strong>Info</strong><span>About this portfolio</span></div>
                         </div>
                         <div class="start-menu-item" data-window="contact">
-                             <img src="Contact.ico" alt="Contact" style="filter: hue-rotate(180deg)"/>
+                             <img src="Contact.ico" alt="Contact"/>
                              <div class="start-menu-item-text"><strong>Contact</strong><span>Get in touch</span></div>
                         </div>
                         <div class="start-menu-separator"></div>
@@ -814,17 +820,17 @@
                             <div class="start-menu-item-text"><strong>My Computer</strong></div>
                         </div>
                         <div class="start-menu-item" data-window="command-prompt">
-                            <img src="https://www.winhistory.de/more/winstart/icons/cmd.png" alt="Command Prompt"/>
+                            <img src="Command Prompt.ico" alt="Command Prompt"/>
                            <div class="start-menu-item-text"><strong>Command Prompt</strong></div>
                         </div>
                     </div>
                 </div>
                  <div class="start-menu-footer">
                     <button id="log-off-btn">
-                        <img src="exit.ico" alt="Log Off"/> Log Off
+                        <img src="Log Off.ico" alt="Log Off"/> Log Off
                     </button>
                     <button id="turn-off-btn">
-                        <img src="exit.ico" alt="Turn Off"/> Turn Off Computer
+                        <img src="Turn Off Computer.ico" alt="Turn Off"/> Turn Off Computer
                     </button>
                 </div>
             </div>
@@ -1048,10 +1054,10 @@
             const populateMyComputer = () => {
                 const container = document.getElementById('my-computer-window').querySelector('.file-grid');
                 const folders = [
-                    { name: 'My Pictures', folder: 'images', icon: `Picture.ico` },
-                    { name: 'My Videos', folder: 'videos', icon: `Picture.ico` },
-                    { name: 'My Music', folder: 'music', icon: `Document.ico` },
-                    { name: 'My Documents', folder: 'documents', icon: `Document.ico` }
+                    { name: 'My Pictures', folder: 'images', icon: `My Pictures.ico` },
+                    { name: 'My Videos', folder: 'videos', icon: `My Videos.ico` },
+                    { name: 'My Music', folder: 'music', icon: `My Music.ico` },
+                    { name: 'My Documents', folder: 'documents', icon: `My Documents.ico` }
                 ];
 
                 container.innerHTML = folders.map(folder => `
