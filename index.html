@@ -392,35 +392,39 @@
 
         /* --- XP Taskbar --- */
         .taskbar {
-            position: absolute; bottom: 0; left: 0; right: 0; height: 30px;
-            background: linear-gradient(to bottom, #245edc, #3b74f1, #245edc);
-            border-top: 1px solid #4a80ef; display: flex;
-            align-items: center; padding: 0; z-index: 1000;
+            position: absolute; 
+            bottom: 0; 
+            left: 0; 
+            right: 0; 
+            height: 30px;
+            background: url('taskbar.png') repeat-x;
+            border-top: none;
+            display: flex;
+            align-items: center; 
+            padding: 0; 
+            z-index: 1000;
         }
         .start-button {
             background: url('start.png') no-repeat center center;
-            background-size: 100% 100%;
             border: none;
-            width: 104px;
-            height: 28px;
+            width: 104px; 
+            height: 30px; 
             cursor: pointer;
-            margin: 0 0 0 1px;
             padding: 0;
+            font-size: 0; /* Hide any text remnants */
         }
         .start-divider {
-            width: 2px;
-            height: 100%;
-            margin-left: 1px;
-            background: linear-gradient(to bottom, 
-                transparent 0%, transparent 15%, 
-                #245edc 15%, #245edc 30%, 
-                transparent 30%, transparent 35%, 
-                #245edc 35%, #245edc 60%, 
-                transparent 60%, transparent 70%, 
-                #245edc 70%, #245edc 85%, 
-                transparent 85%, transparent 100%);
+           display: none; /* Hide the old divider */
         }
-        .system-tray { background-color: #3f90ef; border: 1px inset #fff; padding: 3px 10px; color: white; margin-left: auto; margin-right: 2px;}
+        .system-tray { 
+            background-color: transparent; 
+            border: none;
+            padding: 3px 10px; 
+            color: white; 
+            margin-left: auto; 
+            margin-right: 5px;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
 
         /* --- XP Start Menu --- */
         .start-menu {
@@ -713,7 +717,7 @@
                 <div class="window-content">
                     <div class="mine-header">
                         <div class="mine-counter" id="mine-count">010</div>
-                        <button class="smiley-btn" id="smiley-btn">🙂</button>
+                        <button class="smiley-btn" id="smiley-btn"><img src="reset.ico" alt="Reset"/></button>
                         <div class="mine-counter" id="mine-timer">000</div>
                     </div>
                     <div class="mine-grid" id="mine-grid"></div>
@@ -1423,6 +1427,4 @@
     </script>
 </body>
 </html>
-
-
 
