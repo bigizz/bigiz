@@ -581,6 +581,9 @@
              .desktop-icon span {
                 font-size: 10px;
             }
+            #preview-window.fixed-size {
+            width: 90vw; /* Ensures it doesn't overflow on phones */
+            }
         }
     </style>
 </head>
@@ -589,21 +592,18 @@
         <div class="login-header"></div>
         <div class="login-main">
             <div class="login-box">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3d/Microsoft_Windows_XP_logo.svg/1280px-Microsoft_Windows_XP_logo.svg.png" alt="Windows XP Logo">
+                <img src="welcome.png" alt="Windows XP Logo">
                 <p>To begin, click your user name</p>
             </div>
             <div id="user-profile" class="user-box">
-                <img src="https://img.icons8.com/fluency/96/user-male-circle.png" alt="User Profile">
+                <img src="user.png" alt="User Profile">
                 <span class="username">Bigiz</span>
             </div>
         </div>
         <div class="login-footer">
             <div class="login-footer-content">
-                <button class="turn-off-btn">
-                    <img src="https://www.freeiconspng.com/uploads/power-button-icon-3.png" alt="Turn Off">
-                    Turn off computer
-                </button>
-                <span>After you log on, you can add or change accounts. Just go to Control Panel and click User Accounts.</span>
+
+                <span>After you log on, you can browse my portfolio.</span>
             </div>
         </div>
     </div>
@@ -774,7 +774,7 @@
             <!-- Start Menu -->
             <div id="start-menu" class="start-menu">
                 <div class="start-menu-header">
-                    <img src="https://img.icons8.com/fluency/96/user-male-circle.png" alt="User"/>
+                    <img src="user.png" alt="User"/>
                     <strong>Bigiz</strong>
                 </div>
                 <div class="start-menu-body">
