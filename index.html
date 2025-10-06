@@ -602,8 +602,11 @@
         </div>
         <div class="login-footer">
             <div class="login-footer-content">
-
-                <span>After you log on, you can browse my portfolio.</span>
+                <button class="">
+                    <img src="" alt="">
+                    
+                </button>
+                <span>After you log on, you can browse your computer.</span>
             </div>
         </div>
     </div>
@@ -691,7 +694,8 @@
                     <div class="window-buttons"><button class="close-btn"></button></div>
                 </div>
                 <div class="window-toolbar"></div>
-                <div class="window-content"><p>This is my personal portfolio, designed to look like Windows XP! I am a passionate developer who loves creating unique web experiences.</p></div>
+                <div class="window-content"><p>Anass Biyguise is a multi-disciplinary artist working across various media focusing on the active exploration of visual languages. 
+                    Defined by diverse experiments, consistently developing and sketching new concepts.</p></div>
             </div>
 
             <div id="contact-window" class="window">
@@ -700,7 +704,16 @@
                     <div class="window-buttons"><button class="close-btn"></button></div>
                 </div>
                 <div class="window-toolbar"></div>
-                <div class="window-content"><p>You can reach me at:</p><ul><li>Email: myemail@example.com</li><li>LinkedIn: /in/myprofile</li></ul></div>
+                <div class="window-content">
+                    <p>You can reach me at:</p>
+                    <ul style="list-style-type: none; padding-left: 10px;">
+                        <li style="margin-bottom: 5px;"><strong>Email:</strong> <a href="mailto:bekiz.me@gmail.com" target="_blank" style="color: #0000FF;">bekiz.me@gmail.com</a></li>
+                        <li style="margin-bottom: 5px;"><strong>Instagram:</strong> <a href="https://www.instagram.com/bigiz___/" target="_blank" style="color: #0000FF;">@bigiz___</a></li>
+                        <li style="margin-bottom: 5px;"><strong>Corporate Work:</strong> <a href="https://bigiz.me/" target="_blank" style="color: #0000FF;">https://bigiz.me/</a></li>
+                        <li style="margin-bottom: 5px;"><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/anassbiyguise/" target="_blank" style="color: #0000FF;">Anass Biyguise</a></li>
+                        <li style="margin-bottom: 5px;"><strong>Phone:</strong> <a href="tel:+212693087105" target="_blank" style="color: #0000FF;">+212693087105</a></li>
+                    </ul>
+                </div>
             </div>
 
             <div id="paint-window" class="window">
@@ -911,8 +924,17 @@
             const projects = {
                 documents: [
                     { name: 'hhhhhhhh.txt', icon: 'Document.ico', type: 'document', content: 'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh' },
-                    { name: 'About.doc', icon: 'Document.ico', type: 'document', content: 'This is a placeholder for my resume document.' },
-                    { name: 'Links.doc', icon: 'Document.ico', type: 'document', content: 'This is a placeholder for a presentation.' },
+                    { name: 'About.doc', icon: 'Document.ico', type: 'document', content: 'Anass Biyguise is a multi-disciplinary artist working across various media focusing on the active exploration of visual languages. Defined by diverse experiments, consistently developing and sketching new concepts.' },
+                    { name: 'Links.doc', icon: 'Document.ico', type: 'document', content: <div class="window-content">
+                    <p>You can reach me at:</p>
+                    <ul style="list-style-type: none; padding-left: 10px;">
+                        <li style="margin-bottom: 5px;"><strong>Email:</strong> <a href="mailto:bekiz.me@gmail.com" target="_blank" style="color: #0000FF;">bekiz.me@gmail.com</a></li>
+                        <li style="margin-bottom: 5px;"><strong>Instagram:</strong> <a href="https://www.instagram.com/bigiz___/" target="_blank" style="color: #0000FF;">@bigiz___</a></li>
+                        <li style="margin-bottom: 5px;"><strong>Corporate Work:</strong> <a href="https://bigiz.me/" target="_blank" style="color: #0000FF;">https://bigiz.me/</a></li>
+                        <li style="margin-bottom: 5px;"><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/anassbiyguise/" target="_blank" style="color: #0000FF;">Anass Biyguise</a></li>
+                        <li style="margin-bottom: 5px;"><strong>Phone:</strong> <a href="tel:+212693087105" target="_blank" style="color: #0000FF;">+212693087105</a></li>
+                    </ul>
+                </div> },
                 ],
                 music: [
                     { name: '5-2024-12-22 18-43-05.mp3', icon: 'Music.ico', type: 'audio', content: 'projects/5-2024-12-22 18-43-05.mp3' },
