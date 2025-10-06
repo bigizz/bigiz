@@ -6,14 +6,20 @@
     <title>Bigiz - Windows XP Edition</title>
     <style>
         /* Base styling for the page */
+        :root {
+            --vh: 1vh;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
         body {
             font-family: 'Tahoma', 'Verdana', sans-serif;
             font-size: 11px;
             background-color: #3d78d8; /* XP Blue */
-            margin: 0;
-            padding: 0;
             user-select: none;
-            overflow: hidden;
         }
         
         /* --- Login Screen --- */
@@ -21,7 +27,8 @@
             display: flex;
             flex-direction: column;
             width: 100vw;
-            height: 100vh;
+            height: 100vh; /* Fallback */
+            height: calc(var(--vh, 1vh) * 100);
             background: url('login-background.png') no-repeat center center;
             background-size: cover;
             color: white;
@@ -34,6 +41,7 @@
             position: absolute;
             left: 0;
             right: 0;
+            flex-shrink: 0;
         }
         .login-header { top: 0; }
         .login-footer { bottom: 0; }
@@ -105,7 +113,8 @@
         .screen {
             display: none; /* Hidden by default */
             width: 100vw;
-            height: 100vh;
+            height: 100vh; /* Fallback */
+            height: calc(var(--vh, 1vh) * 100);
             position: relative;
             background: url('bliss_wallpaper.jpg') no-repeat center center;
             background-size: cover;
@@ -154,9 +163,12 @@
         .window-header {
             background: linear-gradient(to right, #0055e7, #3780f1); color: white;
             font-weight: bold; padding: 3px 5px; display: flex; justify-content: space-between;
-            align-items: center; cursor: default;
+            align-items: center; cursor: grab;
             height: 25px;
             box-sizing: border-box;
+        }
+        .window-header:active {
+            cursor: grabbing;
         }
         .window-buttons button {
             background-color: #c4d6f9; border: 1px outset #fff; width: 20px; height: 18px;
@@ -436,7 +448,7 @@
 
         /* --- XP Start Menu --- */
         .start-menu {
-            display: none; position: absolute; bottom: 30px; left: 0; width: 400px;
+            display: none; position: absolute; bottom: 38px; left: 0; width: 400px;
             background-color: #245edc;
             border: 1px solid #000; 
             border-top-right-radius: 5px; 
@@ -693,7 +705,7 @@
                     <div class="window-buttons"><button class="close-btn"></button></div>
                 </div>
                 <div class="window-toolbar"></div>
-                <div class="window-content"><p>Anass Biyguise is a multi-disciplinary artist working across various media focusing on the active exploration of visual languages. 
+                <div class="window-content"><p>Anass Biyguise is a multi-disciplinary artist working on the active exploration of visual languages. 
                     Defined by diverse experiments, consistently developing and sketching new concepts.</p></div>
             </div>
 
@@ -858,6 +870,14 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Mobile viewport height fix
+            const setVh = () => {
+                let vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            };
+            window.addEventListener('resize', setVh);
+            setVh();
+
             const loginScreen = document.getElementById('login-screen');
             const userProfile = document.getElementById('user-profile');
             const desktopScreen = document.querySelector('.screen');
@@ -924,6 +944,23 @@
                 documents: [
                     { name: 'hhhhhhhh.txt', icon: 'Document.ico', type: 'document', content: 'hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh' },
                     { name: 'About.doc', icon: 'Document.ico', type: 'document', content: 'Anass Biyguise is a multi-disciplinary artist working across various media focusing on the active exploration of visual languages. Defined by diverse experiments, consistently developing and sketching new concepts.' },
+                    { 
+                        name: 'Links.doc', 
+                        icon: 'Document.ico', 
+                        type: 'document', 
+                        content: `
+                            <div class="window-content" style="padding: 10px;">
+                                <p>You can reach me at:</p>
+                                <ul style="list-style-type: none; padding-left: 10px;">
+                                    <li style="margin-bottom: 5px;"><strong>Email:</strong> <a href="mailto:bekiz.me@gmail.com" target="_blank" style="color: #0000FF;">bekiz.me@gmail.com</a></li>
+                                    <li style="margin-bottom: 5px;"><strong>Instagram:</strong> <a href="https://www.instagram.com/bigiz___/" target="_blank" style="color: #0000FF;">@bigiz___</a></li>
+                                    <li style="margin-bottom: 5px;"><strong>Corporate Work:</strong> <a href="https://bigiz.me/" target="_blank" style="color: #0000FF;">https://bigiz.me/</a></li>
+                                    <li style="margin-bottom: 5px;"><strong>LinkedIn:</strong> <a href="https://www.linkedin.com/in/anassbiyguise/" target="_blank" style="color: #0000FF;">Anass Biyguise</a></li>
+                                    <li style="margin-bottom: 5px;"><strong>Phone:</strong> <a href="tel:+212693087105" target="_blank" style="color: #0000FF;">+212693087105</a></li>
+                                </ul>
+                            </div>
+                        `
+                    },
                 ],
                 music: [
                     { name: '5-2024-12-22 18-43-05.mp3', icon: 'Music.ico', type: 'audio', content: 'projects/5-2024-12-22 18-43-05.mp3' },
@@ -1056,18 +1093,69 @@
             };
 
             allWindows.forEach(windowEl => {
+                const header = windowEl.querySelector('.window-header');
                 const closeBtn = windowEl.querySelector('.close-btn');
+
+                // Logic to bring window to front
                 windowEl.addEventListener('mousedown', () => {
                     windowEl.style.zIndex = ++highestZ;
                     allWindows.forEach(w => w.classList.remove('active'));
                     windowEl.classList.add('active');
                 });
+                
+                // Close button logic
                 if(closeBtn && !windowEl.id.includes('preview')) {
                     closeBtn.addEventListener('click', (e) => {
                         e.stopPropagation();
                         closeWindow(windowEl);
                     });
                 }
+
+                // Draggable logic
+                let isDragging = false;
+                let offsetX, offsetY;
+
+                header.addEventListener('mousedown', (e) => {
+                    if (e.target.tagName === 'BUTTON') return;
+                    isDragging = true;
+                    offsetX = e.clientX - windowEl.offsetLeft;
+                    offsetY = e.clientY - windowEl.offsetTop;
+                    document.body.style.cursor = 'grabbing';
+                });
+
+                document.addEventListener('mousemove', (e) => {
+                    if (!isDragging) return;
+                    
+                    let newX = e.clientX - offsetX;
+                    let newY = e.clientY - offsetY;
+
+                    const screenWidth = desktopScreen.clientWidth;
+                    const screenHeight = desktopScreen.clientHeight;
+                    const windowWidth = windowEl.offsetWidth;
+                    const windowHeight = windowEl.offsetHeight;
+                    
+                    // Clamp X position
+                    if (windowWidth > screenWidth) {
+                        newX = Math.max(screenWidth - windowWidth, Math.min(newX, 0));
+                    } else {
+                        newX = Math.max(0, Math.min(newX, screenWidth - windowWidth));
+                    }
+
+                    // Clamp Y position
+                    if (windowHeight > screenHeight) {
+                        newY = Math.max(screenHeight - windowHeight, Math.min(newY, 0));
+                    } else {
+                        newY = Math.max(0, Math.min(newY, screenHeight - windowHeight));
+                    }
+                    
+                    windowEl.style.left = `${newX}px`;
+                    windowEl.style.top = `${newY}px`;
+                });
+
+                document.addEventListener('mouseup', () => {
+                    isDragging = false;
+                    document.body.style.cursor = 'default';
+                });
             });
 
             // --- Folder and File Population ---
@@ -1148,7 +1236,7 @@
                         break;
                     case 'document':
                         previewWindow.classList.add('fixed-size');
-                        contentHTML = `<p>${content}</p>`;
+                        contentHTML = `<div>${content}</div>`;
                         break;
                 }
                 previewContent.innerHTML = contentHTML;
