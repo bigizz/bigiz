@@ -6,14 +6,20 @@
     <title>Bigiz - Windows XP Edition</title>
     <style>
         /* Base styling for the page */
+        :root {
+            --vh: 1vh;
+        }
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
         body {
             font-family: 'Tahoma', 'Verdana', sans-serif;
             font-size: 11px;
             background-color: #3d78d8; /* XP Blue */
-            margin: 0;
-            padding: 0;
             user-select: none;
-            overflow: hidden;
         }
         
         /* --- Login Screen --- */
@@ -21,7 +27,8 @@
             display: flex;
             flex-direction: column;
             width: 100vw;
-            height: 100vh;
+            height: 100vh; /* Fallback */
+            height: calc(var(--vh, 1vh) * 100);
             background: url('login-background.png') no-repeat center center;
             background-size: cover;
             color: white;
@@ -34,6 +41,7 @@
             position: absolute;
             left: 0;
             right: 0;
+            flex-shrink: 0;
         }
         .login-header { top: 0; }
         .login-footer { bottom: 0; }
@@ -105,7 +113,8 @@
         .screen {
             display: none; /* Hidden by default */
             width: 100vw;
-            height: 100vh;
+            height: 100vh; /* Fallback */
+            height: calc(var(--vh, 1vh) * 100);
             position: relative;
             background: url('bliss_wallpaper.jpg') no-repeat center center;
             background-size: cover;
@@ -436,7 +445,7 @@
 
         /* --- XP Start Menu --- */
         .start-menu {
-            display: none; position: absolute; bottom: 30px; left: 0; width: 400px;
+            display: none; position: absolute; bottom: 38px; left: 0; width: 400px;
             background-color: #245edc;
             border: 1px solid #000; 
             border-top-right-radius: 5px; 
@@ -858,6 +867,14 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Mobile viewport height fix
+            const setVh = () => {
+                let vh = window.innerHeight * 0.01;
+                document.documentElement.style.setProperty('--vh', `${vh}px`);
+            };
+            window.addEventListener('resize', setVh);
+            setVh();
+
             const loginScreen = document.getElementById('login-screen');
             const userProfile = document.getElementById('user-profile');
             const desktopScreen = document.querySelector('.screen');
@@ -926,33 +943,33 @@
                     { name: 'About.doc', icon: 'Document.ico', type: 'document', content: 'Anass Biyguise is a multi-disciplinary artist working across various media focusing on the active exploration of visual languages. Defined by diverse experiments, consistently developing and sketching new concepts.' },
                 ],
                 music: [
-                    { name: '5-2024-12-22 18-43-05.mp3', icon: 'Music.ico', type: 'audio', content: 'projects/5-2024-12-22 18-43-05.mp3' },
-                    { name: '2024-12-28 15-09-55.mp3', icon: 'Music.ico', type: 'audio', content: 'projects/2024-12-28 15-09-55.mp3' },
-                    { name: '2025-07-01 23-16-34_1.mp3', icon: 'Music.ico', type: 'audio', content: 'projects/2025-07-01 23-16-34_1.mp3' },
+                    { name: '5-2024-12-22 18-43-05.mp3', icon: 'My Music.ico', type: 'audio', content: 'projects/5-2024-12-22 18-43-05.mp3' },
+                    { name: '2024-12-28 15-09-55.mp3', icon: 'My Music.ico', type: 'audio', content: 'projects/2024-12-28 15-09-55.mp3' },
+                    { name: '2025-07-01 23-16-34_1.mp3', icon: 'My Music.ico', type: 'audio', content: 'projects/2025-07-01 23-16-34_1.mp3' },
                 ],
                 images: [
-                    { name: 'manjal.png', icon: 'Picture.ico', type: 'image', content: 'projects/manjal.png' },
-                    { name: '12.PNG', icon: 'Picture.ico', type: 'image', content: 'projects/12.PNG' },
-                    { name: 'E4A632DF-5C0C-42A2-81F7-5E103373CDE9.JPG', icon: 'Picture.ico', type: 'image', content: 'projects/E4A632DF-5C0C-42A2-81F7-5E103373CDE9.JPG' },
-                    { name: 'IMG_0112.jpg', icon: 'Picture.ico', type: 'image', content: 'projects/IMG_0112.jpg' },
-                    { name: 'IMG_0144.jpg', icon: 'Picture.ico', type: 'image', content: 'projects/IMG_0144.jpg' },
-                    { name: 'IMG_0316.jpg', icon: 'Picture.ico', type: 'image', content: 'projects/IMG_0316.jpg' },
-                    { name: 'IMG_0371.jpg', icon: 'Picture.ico', type: 'image', content: 'projects/IMG_0371.jpg' },
-                    { name: 'IMG_0379.jpg', icon: 'Picture.ico', type: 'image', content: 'projects/IMG_0379.jpg' },
-                    { name: 'IMG_0668.jpg', icon: 'Picture.ico', type: 'image', content: 'projects/IMG_0668.jpg' },
-                    { name: 'IMG_0774.jpg', icon: 'Picture.ico', type: 'image', content: 'projects/IMG_0774.jpg' },
-                    { name: 'IMG_0849.jpg', icon: 'Picture.ico', type: 'image', content: 'projects/IMG_0849.jpg' },
-                    { name: 'IMG_1048.jpg', icon: 'Picture.ico', type: 'image', content: 'projects/IMG_1048.jpg' },
-                    { name: 'IMG_1063.jpg', icon: 'Picture.ico', type: 'image', content: 'projects/IMG_1063.jpg' },
+                    { name: 'manjal.png', icon: 'My Pictures.ico', type: 'image', content: 'projects/manjal.png' },
+                    { name: '12.PNG', icon: 'My Pictures.ico', type: 'image', content: 'projects/12.PNG' },
+                    { name: 'E4A632DF-5C0C-42A2-81F7-5E103373CDE9.JPG', icon: 'My Pictures.ico', type: 'image', content: 'projects/E4A632DF-5C0C-42A2-81F7-5E103373CDE9.JPG' },
+                    { name: 'IMG_0112.jpg', icon: 'My Pictures.ico', type: 'image', content: 'projects/IMG_0112.jpg' },
+                    { name: 'IMG_0144.jpg', icon: 'My Pictures.ico', type: 'image', content: 'projects/IMG_0144.jpg' },
+                    { name: 'IMG_0316.jpg', icon: 'My Pictures.ico', type: 'image', content: 'projects/IMG_0316.jpg' },
+                    { name: 'IMG_0371.jpg', icon: 'My Pictures.ico', type: 'image', content: 'projects/IMG_0371.jpg' },
+                    { name: 'IMG_0379.jpg', icon: 'My Pictures.ico', type: 'image', content: 'projects/IMG_0379.jpg' },
+                    { name: 'IMG_0668.jpg', icon: 'My Pictures.ico', type: 'image', content: 'projects/IMG_0668.jpg' },
+                    { name: 'IMG_0774.jpg', icon: 'My Pictures.ico', type: 'image', content: 'projects/IMG_0774.jpg' },
+                    { name: 'IMG_0849.jpg', icon: 'My Pictures.ico', type: 'image', content: 'projects/IMG_0849.jpg' },
+                    { name: 'IMG_1048.jpg', icon: 'My Pictures.ico', type: 'image', content: 'projects/IMG_1048.jpg' },
+                    { name: 'IMG_1063.jpg', icon: 'My Pictures.ico', type: 'image', content: 'projects/IMG_1063.jpg' },
                 ],
                 videos: [ 
-                    { name: 'Dean Benders.mp4', icon: 'Video.ico', type: 'video', content: 'projects/Dean Benders.mp4' },
-                    { name: 'Tutorial.avi', icon: 'Video.ico', type: 'video', content: 'https://www.w3schools.com/html/mov_bbb.mp4' },
-                    { name: '1.mp4', icon: 'Video.ico', type: 'video', content: 'projects/1.mp4' },
-                    { name: '2 2025-07-31 23-37-18.MP4', icon: 'Video.ico', type: 'video', content: 'projects/2 2025-07-31 23-37-18.MP4' },
-                    { name: 'IMG_0424.mp4', icon: 'Video.ico', type: 'video', content: 'projects/IMG_0424.mp4' },
-                    { name: 'IMG_0854.mp4', icon: 'Video.ico', type: 'video', content: 'projects/IMG_0854.mp4' },
-                    { name: 'vid1.mp4', icon: 'Video.ico', type: 'video', content: 'projects/vid1.mp4' },
+                    { name: 'Dean Benders.mp4', icon: 'My Videos.ico', type: 'video', content: 'projects/Dean Benders.mp4' },
+                    { name: 'Tutorial.avi', icon: 'My Videos.ico', type: 'video', content: 'https://www.w3schools.com/html/mov_bbb.mp4' },
+                    { name: '1.mp4', icon: 'My Videos.ico', type: 'video', content: 'projects/1.mp4' },
+                    { name: '2 2025-07-31 23-37-18.MP4', icon: 'My Videos.ico', type: 'video', content: 'projects/2 2025-07-31 23-37-18.MP4' },
+                    { name: 'IMG_0424.mp4', icon: 'My Videos.ico', type: 'video', content: 'projects/IMG_0424.mp4' },
+                    { name: 'IMG_0854.mp4', icon: 'My Videos.ico', type: 'video', content: 'projects/IMG_0854.mp4' },
+                    { name: 'vid1.mp4', icon: 'My Videos.ico', type: 'video', content: 'projects/vid1.mp4' },
                     
                 ]
             };
