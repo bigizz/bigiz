@@ -1390,6 +1390,39 @@
             align-items: center;
             gap: 4px;
         }
+        .pinball-controls-bar {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            margin-left: auto;
+        }
+        .pinball-key-badge {
+            background: linear-gradient(to bottom, #ffffff, #ece9d8);
+            border: 1px solid #7f9db9;
+            border-radius: 3px;
+            padding: 1px 6px;
+            font-size: 10px;
+            font-weight: bold;
+            color: #003399;
+            box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+            cursor: pointer;
+            user-select: none;
+            display: flex;
+            align-items: center;
+            gap: 3px;
+            transition: all 0.05s ease;
+        }
+        .pinball-key-badge:hover {
+            background: #e0eefc;
+            border-color: #316ac5;
+            color: #000;
+        }
+        .pinball-key-badge:active, .pinball-key-badge.pressed {
+            background: #316ac5 !important;
+            color: #fff !important;
+            border-color: #002266 !important;
+            box-shadow: inset 0 1px 2px rgba(0,0,0,0.4) !important;
+        }
         #pinball-container {
             position: relative;
             width: 100%;
@@ -1817,6 +1850,11 @@
                 <div class="pinball-menu-bar">
                      <div id="pinball-mute-btn" class="menu-item">
                          <span>🔊 Mute Music</span>
+                     </div>
+                     <div class="pinball-controls-bar">
+                         <div id="pinball-left-flipper-btn" class="menu-item pinball-key-badge" title="Left Flipper (Left Arrow / A / Z)">◄ Left Key</div>
+                         <div id="pinball-plunger-btn" class="menu-item pinball-key-badge" title="Launch Ball (Space / Down Arrow)">Space (Launch)</div>
+                         <div id="pinball-right-flipper-btn" class="menu-item pinball-key-badge" title="Right Flipper (Right Arrow / D / /)">Right Key ►</div>
                      </div>
                 </div>
                 <div class="window-content">
@@ -2367,6 +2405,10 @@
                         const isMutedNow = muteBtn && muteBtn.innerHTML.includes('Unmute');
                         if (audioCtx && !isMutedNow) {
                             audioCtx.resume();
+                        }
+                        const canvas = document.getElementById('canvas') || document.getElementById('pinball-canvas');
+                        if (canvas) {
+                            canvas.focus();
                         }
                     }
                 }
@@ -3549,9 +3591,99 @@
                 }
             };
 
-            // --- Pinball Logic ---
+            // --- Pinball Logic & Keyboard Controls ---
             let pinballLoaded = false;
             let pinballModule = null;
+
+            const dispatchPinballKey = (type, code, key, keyCode) => {
+                const canvas = document.getElementById('canvas') || document.getElementById('pinball-canvas');
+                
+                let evt;
+                try {
+                    evt = new KeyboardEvent(type, {
+                        code: code,
+                        key: key,
+                        keyCode: keyCode,
+                        which: keyCode,
+                        charCode: keyCode,
+                        bubbles: true,
+                        cancelable: true,
+                        composed: true
+                    });
+                } catch(err) {
+                    evt = document.createEvent('Event');
+                    evt.initEvent(type, true, true);
+                    evt.code = code;
+                    evt.key = key;
+                    evt.keyCode = keyCode;
+                    evt.which = keyCode;
+                }
+
+                if (evt.keyCode !== keyCode) {
+                    Object.defineProperty(evt, 'keyCode', { get: () => keyCode });
+                    Object.defineProperty(evt, 'which', { get: () => keyCode });
+                }
+                if (evt.code !== code) {
+                    Object.defineProperty(evt, 'code', { get: () => code });
+                }
+                if (evt.key !== key) {
+                    Object.defineProperty(evt, 'key', { get: () => key });
+                }
+
+                evt.isSynthesizedPinball = true;
+
+                if (canvas && canvas.dispatchEvent) {
+                    canvas.dispatchEvent(evt);
+                }
+                window.dispatchEvent(evt);
+            };
+
+            const handlePinballKeyEvent = (e, isKeyDown) => {
+                const pinballWin = document.getElementById('pinball-window');
+                if (!pinballWin || pinballWin.style.display === 'none' || !pinballWin.classList.contains('active')) {
+                    return;
+                }
+
+                // If user is currently typing in command prompt input, don't capture keys
+                const cmdInput = document.getElementById('cmd-input');
+                if (cmdInput && document.activeElement === cmdInput) return;
+
+                if (e.isSynthesizedPinball) return;
+
+                const code = e.code;
+                const key = e.key;
+                const type = isKeyDown ? 'keydown' : 'keyup';
+
+                const leftBtn = document.getElementById('pinball-left-flipper-btn');
+                const rightBtn = document.getElementById('pinball-right-flipper-btn');
+                const plungerBtn = document.getElementById('pinball-plunger-btn');
+
+                if (code === 'ArrowLeft' || key === 'ArrowLeft' || code === 'KeyA' || key === 'a' || key === 'A') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (leftBtn) leftBtn.classList.toggle('pressed', isKeyDown);
+                    dispatchPinballKey(type, 'KeyZ', 'z', 90);
+                    dispatchPinballKey(type, 'ShiftLeft', 'Shift', 16);
+                } else if (code === 'ArrowRight' || key === 'ArrowRight' || code === 'KeyD' || key === 'd' || key === 'D') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (rightBtn) rightBtn.classList.toggle('pressed', isKeyDown);
+                    dispatchPinballKey(type, 'Slash', '/', 191);
+                    dispatchPinballKey(type, 'ShiftRight', 'Shift', 16);
+                } else if (code === 'Space' || key === ' ' || code === 'ArrowDown' || key === 'ArrowDown' || code === 'Enter' || key === 'Enter') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (plungerBtn) plungerBtn.classList.toggle('pressed', isKeyDown);
+                    dispatchPinballKey(type, 'Space', ' ', 32);
+                } else if (code === 'ArrowUp' || key === 'ArrowUp') {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    dispatchPinballKey(type, 'KeyX', 'x', 88);
+                }
+            };
+
+            window.addEventListener('keydown', (e) => handlePinballKeyEvent(e, true), true);
+            window.addEventListener('keyup', (e) => handlePinballKeyEvent(e, false), true);
 
             const hidePinballLoading = () => {
                 const loadingEl = document.getElementById('pinball-loading');
@@ -3573,18 +3705,120 @@
                     return;
                 }
 
-                // Prevent context menu (right click menu list) on the pinball canvas and container
-                 const canvas = document.getElementById('pinball-canvas');
-                 if (canvas) {
-                     canvas.id = 'canvas';
-                     canvas.addEventListener('contextmenu', (e) => {
-                         e.preventDefault();
-                     });
-                 }
+                // Prevent context menu on canvas & setup focus
+                const canvas = document.getElementById('pinball-canvas');
+                if (canvas) {
+                    canvas.id = 'canvas';
+                    canvas.tabIndex = 0;
+                    canvas.style.outline = 'none';
+                    canvas.addEventListener('contextmenu', (e) => {
+                        e.preventDefault();
+                    });
+                }
                 const container = document.getElementById('pinball-container');
+                const leftBtn = document.getElementById('pinball-left-flipper-btn');
+                const rightBtn = document.getElementById('pinball-right-flipper-btn');
+                const plungerBtn = document.getElementById('pinball-plunger-btn');
+
                 if (container) {
                     container.addEventListener('contextmenu', (e) => {
                         e.preventDefault();
+                    });
+
+                    // Interactive click & touch zones on game container
+                    const handlePointerDown = (e) => {
+                        const rect = container.getBoundingClientRect();
+                        const clickX = e.clientX - rect.left;
+                        const clickY = e.clientY - rect.top;
+                        const relativeX = clickX / rect.width;
+                        const relativeY = clickY / rect.height;
+
+                        if (relativeY > 0.8 && relativeX > 0.35 && relativeX < 0.65) {
+                            dispatchPinballKey('keydown', 'Space', ' ', 32);
+                            if (plungerBtn) plungerBtn.classList.add('pressed');
+                            container._activePointerKey = 'Space';
+                        } else if (relativeX < 0.5) {
+                            dispatchPinballKey('keydown', 'KeyZ', 'z', 90);
+                            dispatchPinballKey('keydown', 'ShiftLeft', 'Shift', 16);
+                            if (leftBtn) leftBtn.classList.add('pressed');
+                            container._activePointerKey = 'Left';
+                        } else {
+                            dispatchPinballKey('keydown', 'Slash', '/', 191);
+                            dispatchPinballKey('keydown', 'ShiftRight', 'Shift', 16);
+                            if (rightBtn) rightBtn.classList.add('pressed');
+                            container._activePointerKey = 'Right';
+                        }
+                    };
+
+                    const handlePointerUp = () => {
+                        if (!container._activePointerKey) return;
+                        if (container._activePointerKey === 'Space') {
+                            dispatchPinballKey('keyup', 'Space', ' ', 32);
+                            if (plungerBtn) plungerBtn.classList.remove('pressed');
+                        } else if (container._activePointerKey === 'Left') {
+                            dispatchPinballKey('keyup', 'KeyZ', 'z', 90);
+                            dispatchPinballKey('keyup', 'ShiftLeft', 'Shift', 16);
+                            if (leftBtn) leftBtn.classList.remove('pressed');
+                        } else if (container._activePointerKey === 'Right') {
+                            dispatchPinballKey('keyup', 'Slash', '/', 191);
+                            dispatchPinballKey('keyup', 'ShiftRight', 'Shift', 16);
+                            if (rightBtn) rightBtn.classList.remove('pressed');
+                        }
+                        container._activePointerKey = null;
+                    };
+
+                    container.addEventListener('mousedown', handlePointerDown);
+                    window.addEventListener('mouseup', handlePointerUp);
+                    container.addEventListener('touchstart', (e) => {
+                        if (e.touches.length > 0) handlePointerDown(e.touches[0]);
+                    });
+                    container.addEventListener('touchend', handlePointerUp);
+                }
+
+                // Interactive UI Control Badges
+                if (leftBtn) {
+                    leftBtn.addEventListener('mousedown', (e) => {
+                        e.stopPropagation();
+                        dispatchPinballKey('keydown', 'KeyZ', 'z', 90);
+                        dispatchPinballKey('keydown', 'ShiftLeft', 'Shift', 16);
+                        leftBtn.classList.add('pressed');
+                    });
+                    window.addEventListener('mouseup', () => {
+                        if (leftBtn.classList.contains('pressed')) {
+                            dispatchPinballKey('keyup', 'KeyZ', 'z', 90);
+                            dispatchPinballKey('keyup', 'ShiftLeft', 'Shift', 16);
+                            leftBtn.classList.remove('pressed');
+                        }
+                    });
+                }
+
+                if (rightBtn) {
+                    rightBtn.addEventListener('mousedown', (e) => {
+                        e.stopPropagation();
+                        dispatchPinballKey('keydown', 'Slash', '/', 191);
+                        dispatchPinballKey('keydown', 'ShiftRight', 'Shift', 16);
+                        rightBtn.classList.add('pressed');
+                    });
+                    window.addEventListener('mouseup', () => {
+                        if (rightBtn.classList.contains('pressed')) {
+                            dispatchPinballKey('keyup', 'Slash', '/', 191);
+                            dispatchPinballKey('keyup', 'ShiftRight', 'Shift', 16);
+                            rightBtn.classList.remove('pressed');
+                        }
+                    });
+                }
+
+                if (plungerBtn) {
+                    plungerBtn.addEventListener('mousedown', (e) => {
+                        e.stopPropagation();
+                        dispatchPinballKey('keydown', 'Space', ' ', 32);
+                        plungerBtn.classList.add('pressed');
+                    });
+                    window.addEventListener('mouseup', () => {
+                        if (plungerBtn.classList.contains('pressed')) {
+                            dispatchPinballKey('keyup', 'Space', ' ', 32);
+                            plungerBtn.classList.remove('pressed');
+                        }
                     });
                 }
 
