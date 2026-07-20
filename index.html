@@ -1423,21 +1423,40 @@
         }
 
         /* --- Responsive Styles --- */
+
+        /* Tablet & below */
+        @media (max-width: 1024px) {
+            .window {
+                width: min(550px, 95vw);
+                height: min(400px, 80vh);
+            }
+            #pinball-window {
+                width: min(640px, 98vw);
+                height: min(520px, 85vh);
+            }
+            #paint-window {
+                width: min(600px, 96vw);
+                height: min(450px, 80vh);
+            }
+            #xp-picture-viewer {
+                width: min(680px, 96vw);
+                height: min(500px, 80vh);
+                min-width: unset;
+                min-height: unset;
+            }
+        }
+
+        /* Mobile */
         @media (max-width: 768px) {
+            /* Login page */
             .login-main {
                 flex-direction: column;
                 justify-content: center;
                 gap: 2rem;
             }
-             .login-box {
-                text-align: center;
-            }
-             .login-box p {
-                font-size: 14px;
-            }
-             .user-box {
-                flex-direction: column;
-            }
+            .login-box { text-align: center; }
+            .login-box p { font-size: 14px; }
+            .user-box { flex-direction: column; }
             .login-footer-content {
                 flex-direction: column;
                 height: auto;
@@ -1445,29 +1464,149 @@
                 text-align: center;
                 gap: 5px;
             }
-            .window {
-                width: 95vw; /* Occupy most, but not all, of the screen */
-                height: 85vh;
-            }
-            #info-window, #contact-window, #paint-window, #command-prompt-window {
-                width: 95vw;
-                height: 85vh;
-            }
-            .window-content {
-                height: calc(100% - 25px); /* Adjust for header */
-            }
-            .start-menu {
-                width: calc(100% - 6px); /* Full width with padding */
-                max-width: 400px;
-            }
+
+            /* Desktop icons */
             .desktop-icon {
                 width: 70px;
+                padding: 4px;
             }
-             .desktop-icon span {
-                font-size: 10px;
+            .desktop-icon span { font-size: 10px; }
+            .desktop-icon img, .desktop-icon svg { width: 40px; height: 40px; }
+
+            /* All regular windows: near-full screen, fixed so they don't get lost */
+            .window {
+                position: fixed !important;
+                top: 2vh !important;
+                left: 2vw !important;
+                width: 96vw !important;
+                height: 90vh !important;
+                max-height: calc(100vh - 46px) !important; /* leave room for taskbar */
+            }
+
+            /* Specific smaller windows */
+            #info-window, #contact-window {
+                height: auto !important;
+                max-height: 70vh !important;
+            }
+            #minesweeper-window {
+                width: auto !important;
+                height: auto !important;
+                left: 50% !important;
+                transform: translateX(-50%) !important;
+            }
+            #command-prompt-window {
+                height: 60vh !important;
+            }
+            #pinball-window {
+                height: calc(100vh - 46px) !important;
+            }
+            #pinball-window .window-content {
+                height: calc(100% - 25px - 20px) !important;
+            }
+            #paint-window .window-content {
+                height: calc(100% - 25px) !important;
+            }
+
+            /* Window content height adjustments */
+            .window-content {
+                height: calc(100% - 25px - 31px);
+                overflow-y: auto;
+                -webkit-overflow-scrolling: touch;
+            }
+            #info-window .window-content,
+            #contact-window .window-content {
+                height: auto;
+            }
+
+            /* Close button: bigger tap target on mobile */
+            .window-buttons button {
+                width: 28px;
+                height: 26px;
+            }
+            .window-buttons .close-btn {
+                background-size: 24px 24px;
+            }
+
+            /* Window header: prevent dragging confusion */
+            .window-header { cursor: default; }
+
+            /* Start menu: full width */
+            .start-menu {
+                width: calc(100vw - 4px);
+                max-width: 100vw;
+                left: 0;
+                bottom: 38px;
+            }
+            .start-menu-body {
+                flex-direction: column;
+                background: #fff;
+            }
+            .start-menu-left, .start-menu-right {
+                width: 100%;
+            }
+            .start-menu-right {
+                background: #d6e8f6;
+            }
+
+            /* Preview / document window */
+            #preview-window {
+                width: 96vw !important;
+                max-width: 96vw;
+                left: 50%;
+                transform: translate(-50%, -50%);
             }
             #preview-window.fixed-size {
-                width: 90vw; /* Ensures it doesn't overflow on phones */
+                width: 96vw;
+                height: auto;
+            }
+
+            /* XP Picture Viewer */
+            #xp-picture-viewer {
+                width: 96vw !important;
+                height: 85vh !important;
+                min-width: unset !important;
+                min-height: unset !important;
+                top: 50% !important;
+                left: 50% !important;
+                transform: translate(-50%, -50%) !important;
+            }
+            .xp-viewer-toolbar {
+                flex-wrap: wrap;
+                height: auto;
+                padding: 4px;
+                gap: 4px;
+            }
+            .xp-toolbar-btn {
+                width: 36px;
+                height: 36px;
+            }
+
+            /* WMP */
+            #wmp-window {
+                width: 96vw !important;
+                max-width: 96vw;
+            }
+            .wmp-viewport { max-height: 40vh; }
+
+            /* Winamp */
+            #winamp-window {
+                width: min(320px, 94vw) !important;
+            }
+
+            /* File grid: bigger touch targets */
+            .file-item img, .file-item svg { width: 40px; height: 40px; }
+            .file-grid { gap: 10px; }
+        }
+
+        /* Very small screens */
+        @media (max-width: 400px) {
+            .start-menu-item img, .start-menu-item svg { width: 24px; height: 24px; }
+            .start-menu-item { padding: 6px 8px; }
+            .start-menu-header strong { font-size: 14px; }
+            .start-menu-header img { width: 36px; height: 36px; }
+            #minesweeper-window {
+                transform: translateX(-50%) scale(0.9);
+                transform-origin: top center;
             }
         }
     </style>
@@ -2180,6 +2319,8 @@
 
 
             // --- Window Management ---
+            const isMobile = () => window.innerWidth <= 768;
+
             const openWindow = (id, title) => {
                 document.querySelectorAll('#file-explorer-window, #my-computer-window, #recycle-bin-window').forEach(win => win.style.display = 'none');
 
@@ -2191,16 +2332,27 @@
                     allWindows.forEach(w => w.classList.remove('active'));
                     windowEl.classList.add('active');
 
+                    // On mobile, CSS handles positioning via fixed+top/left;
+                    // only apply JS centering on desktop.
+                    if (!isMobile()) {
+                        const screenRect = desktopScreen.getBoundingClientRect();
+                        const windowWidth = windowEl.offsetWidth;
+                        const windowHeight = windowEl.offsetHeight;
 
-                    const screenRect = desktopScreen.getBoundingClientRect();
-                    const windowWidth = windowEl.offsetWidth;
-                    const windowHeight = windowEl.offsetHeight;
-                    
-                    let top = (screenRect.height - windowHeight) / 2;
-                    let left = (screenRect.width - windowWidth) / 2;
-                    
-                    windowEl.style.top = `${top}px`;
-                    windowEl.style.left = `${left}px`;
+                        let top = (screenRect.height - windowHeight) / 2;
+                        let left = (screenRect.width - windowWidth) / 2;
+
+                        // Clamp so window never goes off-screen
+                        top = Math.max(0, top);
+                        left = Math.max(0, left);
+
+                        windowEl.style.top = `${top}px`;
+                        windowEl.style.left = `${left}px`;
+                    } else {
+                        // On mobile, clear any inline top/left so CSS media-query rules apply
+                        windowEl.style.top = '';
+                        windowEl.style.left = '';
+                    }
 
                     if (title) {
                         windowEl.querySelector('.window-title').textContent = title;
@@ -2212,8 +2364,8 @@
                         }
                         const audioCtx = window.Module && window.Module.SDL2 && window.Module.SDL2.audioContext;
                         const muteBtn = document.getElementById('pinball-mute-btn');
-                        const isMuted = muteBtn && muteBtn.innerHTML.includes('Unmute');
-                        if (audioCtx && !isMuted) {
+                        const isMutedNow = muteBtn && muteBtn.innerHTML.includes('Unmute');
+                        if (audioCtx && !isMutedNow) {
                             audioCtx.resume();
                         }
                     }
